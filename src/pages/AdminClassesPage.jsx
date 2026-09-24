@@ -1,9 +1,7 @@
 import { useState } from 'react'
-import { useAuth } from '../hooks/useAuth.js'
 import Modal from '../components/Modal.jsx'
 
 export default function AdminClassesPage() {
-  const { user } = useAuth()
   const [lops, setLops] = useState([
     { id: 1, ten: 'CNTT - K18A', namHoc: '2026-2027', giaoVien: 'Nguyễn Văn Giáo' },
     { id: 2, ten: 'CNTT - K18B', namHoc: '2026-2027', giaoVien: 'Nguyễn Văn Giáo' },
@@ -13,12 +11,21 @@ export default function AdminClassesPage() {
   const [editing, setEditing] = useState(null)
   const [form, setForm] = useState({ ten: '', namHoc: '', giaoVienId: '' })
 
-  const openCreate = () => { setEditing(null); setForm({ ten: '', namHoc: '', giaoVienId: '' }); setShowModal(true) }
-  const openEdit = (lop) => { setEditing(lop); setForm({ ten: lop.ten, namHoc: lop.namHoc, giaoVienId: '' }); setShowModal(true) }
-  const handleDelete = (id) => { if (window.confirm('Xóa lớp này?')) setLops(lops.filter(l => l.id !== id)) }
+  const openCreate = () => {
+    setEditing(null)
+    setForm({ ten: '', namHoc: '', giaoVienId: '' })
+    setShowModal(true)
+  }
+  const openEdit = (lop) => {
+    setEditing(lop)
+    setForm({ ten: lop.ten, namHoc: lop.namHoc, giaoVienId: '' })
+    setShowModal(true)
+  }
+  const handleDelete = (id) => {
+    if (window.confirm('Xóa lớp này?')) setLops(lops.filter(l => l.id !== id))
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleConfirm = () => {
     if (editing) {
       setLops(lops.map(l => l.id === editing.id ? { ...l, ...form } : l))
     } else {
@@ -67,30 +74,32 @@ export default function AdminClassesPage() {
         </div>
       </div>
 
-      <Modal
-        title={editing ? 'Sửa lớp học' : 'Thêm lớp học'}
-        onCancel={() => setShowModal(false)}
-        onConfirm={handleSubmit}
-        confirmLabel="Lưu"
-      >
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div>
-            <label className="form-label">Tên lớp</label>
-            <input className="form-input" value={form.ten} onChange={e => setForm({...form, ten: e.target.value})} required />
-          </div>
-          <div>
-            <label className="form-label">Năm học</label>
-            <input className="form-input" value={form.namHoc} onChange={e => setForm({...form, namHoc: e.target.value})} required />
-          </div>
-          <div>
-            <label className="form-label">Giáo viên phụ trách</label>
-            <select className="form-select" value={form.giaoVienId} onChange={e => setForm({...form, giaoVienId: e.target.value})}>
-              <option value="">-- Chọn giáo viên --</option>
-              <option value="1">Nguyễn Văn Giáo</option>
-            </select>
-          </div>
-        </form>
-      </Modal>
+      {showModal && (
+        <Modal
+          title={editing ? 'Sửa lớp học' : 'Thêm lớp học'}
+          onCancel={() => setShowModal(false)}
+          onConfirm={handleConfirm}
+          confirmLabel="Lưu"
+        >
+          <form onSubmit={(e) => { e.preventDefault(); handleConfirm(); }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div>
+              <label className="form-label">Tên lớp</label>
+              <input className="form-input" value={form.ten} onChange={e => setForm({...form, ten: e.target.value})} required />
+            </div>
+            <div>
+              <label className="form-label">Năm học</label>
+              <input className="form-input" value={form.namHoc} onChange={e => setForm({...form, namHoc: e.target.value})} required />
+            </div>
+            <div>
+              <label className="form-label">Giáo viên phụ trách</label>
+              <select className="form-select" value={form.giaoVienId} onChange={e => setForm({...form, giaoVienId: e.target.value})}>
+                <option value="">-- Chọn giáo viên --</option>
+                <option value="1">Nguyễn Văn Giáo</option>
+              </select>
+            </div>
+          </form>
+        </Modal>
+      )}
     </div>
   )
 }

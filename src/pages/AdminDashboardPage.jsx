@@ -1,9 +1,6 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth.js'
 
 export default function AdminDashboardPage() {
-  const { user } = useAuth()
 
   const stats = [
     { label: 'Tổng lớp học', value: '3', icon: '📚', href: '/admin/classes' },
