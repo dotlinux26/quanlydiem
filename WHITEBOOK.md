@@ -1,6 +1,6 @@
 1. Tên ứng dụng
 
-Ứng dụng quản lý nhập liệu điểm và xuất báo cáo cho giáo viên
+Phát triển dự án website quản lý nhập liệu điểm và xuất báo cáo cho giáo viên
 
 Mục tiêu: thay thế quy trình giáo viên nhập, quản lý, tra cứu và xuất báo cáo điểm thủ công.
 

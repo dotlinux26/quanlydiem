@@ -1,4 +1,4 @@
-# Ứng dụng quản lý nhập liệu điểm và xuất báo cáo cho giáo viên
+# Phát triển dự án website quản lý nhập liệu điểm và xuất báo cáo cho giáo viên
 
 **Phát triển ứng dụng web hỗ trợ giáo viên nhập, quản lý, tra cứu và xuất báo cáo điểm thay thế quy trình thủ công**
 
