@@ -22,45 +22,61 @@ export default function ClassListPage() {
       .finally(() => {
         if (mounted) setLoading(false)
       })
-    return () => {
-      mounted = false
-    }
+    return () => { mounted = false }
   }, [user])
 
-  if (loading) return <p className="muted">Đang tải...</p>
-  if (error) return <p className="form-error">{error}</p>
+  if (loading) return <div className="loading">Đang tải...</div>
+  if (error) return <div className="alert alert-error" role="alert">{error}</div>
 
   return (
-    <section className="page">
-      <h2>Danh sách lớp được phân công</h2>
+    <div className="page">
+      <div className="page-header">
+        <div>
+          <h2>Danh sách lớp được phân công</h2>
+          <p className="muted">{lops.length} lớp học</p>
+        </div>
+      </div>
+
       {lops.length === 0 ? (
-        <p className="muted">Chưa có lớp nào được phân công.</p>
+        <div className="card">
+          <div className="empty-state">
+            <div className="icon" aria-hidden="true">📚</div>
+            <h3>Chưa có lớp nào</h3>
+            <p>Bạn chưa được phân công lớp học nào. Vui lòng liên hệ quản trị viên.</p>
+          </div>
+        </div>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>STT</th>
-              <th>Tên lớp</th>
-              <th>Năm học</th>
-              <th>Giáo viên</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {lops.map((lop, i) => (
-              <tr key={lop.id}>
-                <td>{i + 1}</td>
-                <td>{lop.ten}</td>
-                <td>{lop.namHoc}</td>
-                <td>{user?.name}</td>
-                <td>
-                  <Link to={`/lop/${lop.id}`}>Xem sinh viên</Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="card">
+          <div className="table-wrapper">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Tên lớp</th>
+                  <th>Năm học</th>
+                  <th>Giáo viên phụ trách</th>
+                  <th style={{ width: '140px' }}>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                {lops.map((lop, i) => (
+                  <tr key={lop.id}>
+                    <td>{i + 1}</td>
+                    <td><strong>{lop.ten}</strong></td>
+                    <td>{lop.namHoc}</td>
+                    <td>{user?.name}</td>
+                    <td>
+                      <Link to={`/lop/${lop.id}`} className="btn btn-outline btn-sm">
+                        Xem sinh viên
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
-    </section>
+    </div>
   )
 }

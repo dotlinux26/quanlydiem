@@ -36,41 +36,53 @@ export default function LoginPage() {
 
   return (
     <div className="login-page">
-      <form className="login-card" onSubmit={handleSubmit}>
-        <h1>Quản lý nhập liệu điểm</h1>
-        <p className="login-sub">Đăng nhập để tiếp tục</p>
-        <label>
-          Tên đăng nhập
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            autoComplete="username"
-          />
-        </label>
-        <label>
-          Mật khẩu
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-          />
-        </label>
-        {error && <p className="form-error">{error}</p>}
-        <button type="submit" className="btn btn-primary" disabled={submitting}>
-          {submitting ? 'Đang đăng nhập...' : 'Đăng nhập'}
-        </button>
-        <div className="login-hint">
-          <p>
-            Giáo viên: <code>gv01</code> / <code>123456</code>
-          </p>
-          <p>
-            Quản trị viên: <code>admin01</code> / <code>admin123</code>
-          </p>
-          <Link to="/">← Về trang giới thiệu</Link>
+      <div className="login-card">
+        <div className="login-header">
+          <div className="logo" aria-hidden="true">📊</div>
+          <h1>Quản Lý Điểm</h1>
+          <p>Hệ thống nhập liệu và báo cáo điểm cho giáo viên</p>
         </div>
-      </form>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label" htmlFor="username">Tên đăng nhập</label>
+            <input
+              id="username"
+              type="text"
+              className="form-input"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
+              placeholder="Nhập tên đăng nhập"
+              disabled={submitting}
+            />
+          </div>
+          <div className="form-group">
+            <label className="form-label" htmlFor="password">Mật khẩu</label>
+            <input
+              id="password"
+              type="password"
+              className="form-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              placeholder="Nhập mật khẩu"
+              disabled={submitting}
+            />
+          </div>
+          {error && <div className="alert alert-error" role="alert">{error}</div>}
+          <button type="submit" className="btn btn-primary btn-lg" disabled={submitting}>
+            {submitting ? 'Đang đăng nhập...' : 'Đăng nhập'}
+          </button>
+        </form>
+        <div className="login-footer">
+          <p>Tài khoản demo:</p>
+          <p>
+            Giáo viên: <code>gv01</code> / <code>123456</code><br />
+            Quản trị: <code>admin01</code> / <code>admin123</code>
+          </p>
+          <Link to="/" style={{ marginTop: '1rem', display: 'inline-block' }}>← Về trang giới thiệu</Link>
+        </div>
+      </div>
     </div>
   )
 }

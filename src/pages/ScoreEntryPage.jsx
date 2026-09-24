@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from 'react'
+import { useEffect, useState, useMemo, useRef, useCallback } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
 import * as lopService from '../services/lopService.js'
@@ -6,6 +6,7 @@ import * as diemService from '../services/diemService.js'
 import ScoreForm from '../components/ScoreForm.jsx'
 import { parseScore, scoreInputError, calcSummary } from '../utils/score.js'
 import { formatScore } from '../utils/format.js'
+import * as XLSX from 'xlsx'
 
 function toValues(record) {
   return record
@@ -15,6 +16,17 @@ function toValues(record) {
         cuoiKy: formatScore(record.cuoiKy),
       }
     : { thuongKy: '', giuaKy: '', cuoiKy: '' }
+}
+
+function exportToFile(data, fileName, fileType) {
+  const ws = XLSX.utils.json_to_sheet(data)
+  const wb = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(wb, ws, 'BangDiem')
+  if (fileType === 'xlsx') {
+    XLSX.writeFile(wb, `${fileName}.xlsx`)
+  } else {
+    XLSX.writeFile(wb, `${fileName}.csv`)
+  }
 }
 
 export default function ScoreEntryPage() {
@@ -58,9 +70,7 @@ export default function ScoreEntryPage() {
       })
       .catch(() => mounted && setPageError('Có lỗi khi tải dữ liệu.'))
       .finally(() => mounted && setLoading(false))
-    return () => {
-      mounted = false
-    }
+    return () => { mounted = false }
   }, [id, user])
 
   useEffect(() => {
@@ -84,9 +94,7 @@ export default function ScoreEntryPage() {
         setMsg('')
       })
       .catch(() => mounted && setPageError('Không tải được điểm của lớp.'))
-    return () => {
-      mounted = false
-    }
+    return () => { mounted = false }
   }, [lop, monId, sinhViens])
 
   function handleChange(svId, field, value) {
@@ -183,111 +191,136 @@ export default function ScoreEntryPage() {
     }
   }
 
-  if (loading) return <p className="muted">Đang tải...</p>
-  if (pageError) return <p className="form-error">{pageError}</p>
+  const handleExport = useCallback((type) => {
+    if (!lop || !monHoc) return
+    const exportData = sinhViens.map((sv, idx) => {
+      const row = rows[sv.id]
+      const tk = computed[sv.id] ?? row?.record?.tongKet
+      return {
+        STT: idx + 1,
+        'Mã SV': sv.ma,
+        'Họ tên': sv.hoTen,
+        'Thường kỳ': row?.values?.thuongKy ?? '',
+        'Giữa kỳ': row?.values?.giuaKy ?? '',
+        'Cuối kỳ': row?.values?.cuoiKy ?? '',
+        'Tổng kết': tk === null || tk === undefined ? '' : formatScore(tk),
+        'Trạng thái': row?.status === 'saved' ? 'Đã lưu' : row?.status === 'dirty' ? 'Chưa lưu' : 'Mới',
+      }
+    })
+    const fileName = `BangDiem_${lop.ten}_${monHoc.ma}`.replace(/\s+/g, '_')
+    exportToFile(exportData, fileName, type)
+    setMsg(`Đã xuất ${type.toUpperCase()}: ${fileName}.${type}`)
+  }, [lop, monHoc, sinhViens, rows, computed])
+
+  if (loading) return <div className="loading">Đang tải...</div>
+  if (pageError) return <div className="alert alert-error" role="alert">{pageError}</div>
 
   const dirtyCount = Object.values(rows).filter((r) => r.status === 'dirty').length
 
   return (
-    <section className="page">
-      <Link to={`/lop/${lop.id}`} className="link-back">
-        ← Về danh sách sinh viên
-      </Link>
-      <h2>Nhập điểm — {lop.ten}</h2>
-      <div className="toolbar">
-        <label>
-          Môn học
-          <select
-            value={monId}
-            onChange={(e) => handleMonChange(Number(e.target.value))}
-          >
-            {monHocs.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.ten} ({m.ma})
-              </option>
-            ))}
-          </select>
-        </label>
-        {dirtyCount > 0 && (
-          <span className="muted">
-            Có {dirtyCount} hàng chưa lưu · tổng kết = thường kỳ×0,3 + giữa
-            kỳ×0,3 + cuối kỳ×0,4
-          </span>
-        )}
+    <div className="page">
+      <div className="page-header">
+        <div>
+          <Link to={`/lop/${lop.id}`} className="btn btn-ghost btn-sm link-back">← Danh sách sinh viên</Link>
+          <h2 style={{ marginTop: '0.75rem' }}>Nhập điểm — {lop.ten}</h2>
+          <p className="muted">Môn: {monHoc?.ten} ({monHoc?.ma}) · Thang điểm 0–10, bước 0,5</p>
+        </div>
+        <div className="page-actions">
+          <button className="btn btn-outline" onClick={() => handleExport('xlsx')}>Xuất Excel</button>
+          <button className="btn btn-outline" onClick={() => handleExport('csv')}>Xuất CSV</button>
+        </div>
       </div>
-      {msg && <p className="form-success">{msg}</p>}
-      {highlightSv && (
-        <p className="muted">Đang chấm điểm: {highlightSv.hoTen} ({highlightSv.ma})</p>
-      )}
-      <table className="table score-table" ref={rowsRef}>
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Mã SV</th>
-            <th>Họ tên</th>
-            <th colSpan={3}>Điểm thành phần</th>
-            <th>Tổng kết</th>
-            <th>Trạng thái</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {sinhViens.map((sv, i) => {
-            const row = rows[sv.id]
-            if (!row) return null
-            const tongKet = computed[sv.id] ?? row.record?.tongKet
-            const isSaving = savingId === sv.id
-            const isHighlight =
-              highlightSvId !== null && sv.id === highlightSvId
-            return (
-              <tr
-                key={sv.id}
-                data-sv={sv.id}
-                className={isHighlight ? 'row-highlight' : ''}
-              >
-                <td>{i + 1}</td>
-                <td>{sv.ma}</td>
-                <td>{sv.hoTen}</td>
-                <td>
-                  <ScoreForm
-                    value={row.values}
-                    errors={row.errors}
-                    onChange={(f, v) => handleChange(sv.id, f, v)}
-                  />
-                </td>
-                <td className="tong-ket">
-                  {tongKet === null || tongKet === undefined
-                    ? '—'
-                    : formatScore(tongKet)}
-                </td>
-                <td>
-                  <span className={`status status-${row.status}`}>
-                    {row.status === 'saved'
-                      ? 'Đã lưu'
-                      : row.status === 'dirty'
-                        ? 'Chưa lưu'
-                        : 'Mới'}
-                  </span>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    disabled={isSaving}
-                    onClick={() => saveRow(sv)}
-                  >
-                    {isSaving ? 'Đang lưu...' : 'Lưu'}
-                  </button>
-                </td>
+
+      <div className="card">
+        <div className="toolbar">
+          <div className="form-group" style={{ margin: 0 }}>
+            <label className="form-label">Môn học</label>
+            <select
+              className="form-select"
+              value={monId}
+              onChange={(e) => handleMonChange(Number(e.target.value))}
+              style={{ minWidth: '260px' }}
+            >
+              {monHocs.map((m) => (
+                <option key={m.id} value={m.id}>{m.ten} ({m.ma})</option>
+              ))}
+            </select>
+          </div>
+          {dirtyCount > 0 && (
+            <span className="badge badge-warning" style={{ marginLeft: 'auto' }}>
+              {dirtyCount} hàng chưa lưu
+            </span>
+          )}
+        </div>
+
+        {msg && <div className={`alert ${msg.includes('thất bại') || msg.includes('lỗi') ? 'alert-error' : 'alert-success'}`} role="alert">{msg}</div>}
+        {highlightSv && (
+          <div className="alert alert-info" role="alert">
+            Đang chấm điểm: <strong>{highlightSv.hoTen}</strong> ({highlightSv.ma})
+          </div>
+        )}
+
+        <div className="table-wrapper">
+          <table className="table score-table" ref={rowsRef}>
+            <thead>
+              <tr>
+                <th style={{ width: '60px' }}>STT</th>
+                <th style={{ width: '110px' }}>Mã SV</th>
+                <th>Họ tên</th>
+                <th className="th-score" style={{ width: '320px' }} colSpan={3}>Điểm thành phần</th>
+                <th className="th-score" style={{ width: '100px' }}>Tổng kết</th>
+                <th style={{ width: '120px' }}>Trạng thái</th>
+                <th style={{ width: '100px' }}>Thao tác</th>
               </tr>
-            )
-          })}
-        </tbody>
-      </table>
-      <p className="muted">
-        Môn học: {monHoc?.ten} ({monHoc?.ma}) · thang điểm 0–10, mỗi ô dùng
-        bước 0,5
-      </p>
-    </section>
+            </thead>
+            <tbody>
+              {sinhViens.map((sv, i) => {
+                const row = rows[sv.id]
+                if (!row) return null
+                const tongKet = computed[sv.id] ?? row.record?.tongKet
+                const isSaving = savingId === sv.id
+                const isHighlight = highlightSvId !== null && sv.id === highlightSvId
+                return (
+                  <tr
+                    key={sv.id}
+                    data-sv={sv.id}
+                    className={isHighlight ? 'row-highlight' : ''}
+                  >
+                    <td>{i + 1}</td>
+                    <td><code style={{ fontSize: '0.8125rem' }}>{sv.ma}</code></td>
+                    <td>{sv.hoTen}</td>
+                    <td className="score-cell">
+                      <ScoreForm
+                        value={row.values}
+                        errors={row.errors}
+                        onChange={(f, v) => handleChange(sv.id, f, v)}
+                      />
+                    </td>
+                    <td className="tong-ket">
+                      {tongKet === null || tongKet === undefined ? '—' : formatScore(tongKet)}
+                    </td>
+                    <td>
+                      <span className={`badge ${row.status === 'saved' ? 'badge-success' : row.status === 'dirty' ? 'badge-warning' : 'badge-neutral'}`}>
+                        {row.status === 'saved' ? 'Đã lưu' : row.status === 'dirty' ? 'Chưa lưu' : 'Mới'}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        disabled={isSaving}
+                        onClick={() => saveRow(sv)}
+                      >
+                        {isSaving ? 'Đang lưu...' : 'Lưu'}
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   )
 }
