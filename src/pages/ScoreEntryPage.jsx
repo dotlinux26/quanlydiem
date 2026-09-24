@@ -3,7 +3,6 @@ import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
 import * as lopService from '../services/lopService.js'
 import * as diemService from '../services/diemService.js'
-import ScoreForm from '../components/ScoreForm.jsx'
 import { parseScore, scoreInputError, calcSummary } from '../utils/score.js'
 import { formatScore } from '../utils/format.js'
 import * as XLSX from 'xlsx'
@@ -267,7 +266,9 @@ export default function ScoreEntryPage() {
                 <th style={{ width: '60px' }}>STT</th>
                 <th style={{ width: '110px' }}>Mã SV</th>
                 <th>Họ tên</th>
-                <th className="th-score" style={{ width: '320px' }} colSpan={3}>Điểm thành phần</th>
+                <th className="th-score" style={{ width: '100px' }}>Thường kỳ</th>
+                <th className="th-score" style={{ width: '100px' }}>Giữa kỳ</th>
+                <th className="th-score" style={{ width: '100px' }}>Cuối kỳ</th>
                 <th className="th-score" style={{ width: '100px' }}>Tổng kết</th>
                 <th style={{ width: '120px' }}>Trạng thái</th>
                 <th style={{ width: '100px' }}>Thao tác</th>
@@ -280,6 +281,8 @@ export default function ScoreEntryPage() {
                 const tongKet = computed[sv.id] ?? row.record?.tongKet
                 const isSaving = savingId === sv.id
                 const isHighlight = highlightSvId !== null && sv.id === highlightSvId
+                const fields = ['thuongKy', 'giuaKy', 'cuoiKy']
+                const labels = ['Thường kỳ', 'Giữa kỳ', 'Cuối kỳ']
                 return (
                   <tr
                     key={sv.id}
@@ -289,13 +292,25 @@ export default function ScoreEntryPage() {
                     <td>{i + 1}</td>
                     <td><code style={{ fontSize: '0.8125rem' }}>{sv.ma}</code></td>
                     <td>{sv.hoTen}</td>
-                    <td className="score-cell">
-                      <ScoreForm
-                        value={row.values}
-                        errors={row.errors}
-                        onChange={(f, v) => handleChange(sv.id, f, v)}
-                      />
-                    </td>
+                    {fields.map((f, idx) => (
+                      <td key={f} className="score-cell" style={{ padding: '0.25rem 0.5rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.1rem', minWidth: '90px' }}>
+                          <label className="form-label" style={{ fontSize: '0.55rem', textTransform: 'uppercase', letterSpacing: '0.02em', color: '#94a3b8', margin: 0, lineHeight: 1, whiteSpace: 'nowrap' }}>
+                            {labels[idx]}
+                          </label>
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            className="form-input"
+                            placeholder="0–10"
+                            value={row.values?.[f] ?? ''}
+                            onChange={(e) => handleChange(sv.id, f, e.target.value)}
+                            style={{ width: '90px', height: '32px', padding: '0 0.35rem', fontSize: '0.8125rem', textAlign: 'center', borderRadius: '6px', boxSizing: 'border-box', borderColor: row.errors?.[f] ? '#dc2626' : '#cbd5e1' }}
+                          />
+                          {row.errors?.[f] && <span className="form-error" style={{ fontSize: '0.6rem', color: '#dc2626', lineHeight: 1, whiteSpace: 'nowrap', marginTop: '0.05rem' }}>{row.errors[f]}</span>}
+                        </div>
+                      </td>
+                    ))}
                     <td className="tong-ket">
                       {tongKet === null || tongKet === undefined ? '—' : formatScore(tongKet)}
                     </td>
