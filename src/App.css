@@ -17,7 +17,7 @@
 
 .app-shell h1 {
   margin: 0 0 0.5rem;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 
 .app-shell > p {
@@ -52,13 +52,377 @@
 
 .reference {
   margin-top: 1.5rem;
+}
+
+/* Layout */
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-main {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.navbar-brand {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+}
+
+.navbar-links a {
+  color: #cbd5e1;
+  text-decoration: none;
+}
+
+.navbar-links a:hover {
+  color: #ffffff;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   font-size: 0.85rem;
+}
+
+/* Page */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.page h2 {
+  margin: 0.5rem 0 1rem;
+}
+
+.muted {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.link-back {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1e293b;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #f1f5f9;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-danger {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+.btn-ghost:hover {
+  background: #334155;
+  color: #ffffff;
+}
+
+a.btn {
+  text-decoration: none;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid #eef2f7;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background: #fbfcfe;
+}
+
+.table a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.table a:hover {
+  text-decoration: underline;
+}
+
+.score-table .th-score {
+  text-align: center;
+}
+
+/* Score form */
+.score-form {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.score-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.7rem;
   color: #64748b;
 }
 
-.reference code {
+.score-form input {
+  width: 62px;
+  padding: 0.3rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.score-form label.has-error input {
+  border-color: #dc2626;
+}
+
+.field-error {
+  color: #dc2626;
+  font-size: 0.68rem;
+  max-width: 80px;
+}
+
+.tong-ket {
+  font-weight: 600;
+}
+
+/* Status badge */
+.status {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.status-saved {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status-dirty {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.status-new {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.row-highlight {
+  background: #eff6ff !important;
+  box-shadow: inset 3px 0 0 #2563eb;
+}
+
+/* Login */
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #f1f5f9;
+  padding: 1.5rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+}
+
+.login-card h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+}
+
+.login-sub {
+  margin: 0 0 1.25rem;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.login-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.login-card input {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.login-card .btn-primary {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.login-hint {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.login-hint code {
   background: #f1f5f9;
   padding: 0.1rem 0.35rem;
   border-radius: 4px;
-  font-size: 0.8rem;
+}
+
+/* Messages */
+.form-error {
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+.form-success {
+  color: #15803d;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.875rem;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgb(15 23 42 / 0.45);
+  display: grid;
+  place-items: center;
+  z-index: 50;
+}
+
+.modal {
+  position: relative;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  min-width: 320px;
+  max-width: 520px;
+}
+
+.modal h3 {
+  margin: 0 0 0.75rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.75rem;
+  border: none;
+  background: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
