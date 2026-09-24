@@ -7,6 +7,8 @@ import LoginPage from './pages/LoginPage.jsx'
 import ClassListPage from './pages/ClassListPage.jsx'
 import StudentListPage from './pages/StudentListPage.jsx'
 import ScoreEntryPage from './pages/ScoreEntryPage.jsx'
+import AdminDashboardPage from './pages/AdminDashboardPage.jsx'
+import AdminClassesPage from './pages/AdminClassesPage.jsx'
 import { ROLES } from './constants/roles.js'
 
 function App() {
@@ -17,10 +19,11 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route element={<Layout />}>
             <Route index element={<LandingPage />} />
+            {/* Teacher routes - chỉ GIAO_VIEN */}
             <Route
               path="lop"
               element={
-                <ProtectedRoute roles={[ROLES.GIAO_VIEN, ROLES.ADMIN]}>
+                <ProtectedRoute roles={[ROLES.GIAO_VIEN]}>
                   <ClassListPage />
                 </ProtectedRoute>
               }
@@ -28,7 +31,7 @@ function App() {
             <Route
               path="lop/:id"
               element={
-                <ProtectedRoute roles={[ROLES.GIAO_VIEN, ROLES.ADMIN]}>
+                <ProtectedRoute roles={[ROLES.GIAO_VIEN]}>
                   <StudentListPage />
                 </ProtectedRoute>
               }
@@ -36,8 +39,25 @@ function App() {
             <Route
               path="lop/:id/diem"
               element={
-                <ProtectedRoute roles={[ROLES.GIAO_VIEN, ROLES.ADMIN]}>
+                <ProtectedRoute roles={[ROLES.GIAO_VIEN]}>
                   <ScoreEntryPage />
+                </ProtectedRoute>
+              }
+            />
+            {/* Admin routes - chỉ ADMIN */}
+            <Route
+              path="admin"
+              element={
+                <ProtectedRoute roles={[ROLES.ADMIN]}>
+                  <AdminDashboardPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="admin/classes"
+              element={
+                <ProtectedRoute roles={[ROLES.ADMIN]}>
+                  <AdminClassesPage />
                 </ProtectedRoute>
               }
             />

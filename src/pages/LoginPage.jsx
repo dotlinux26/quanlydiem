@@ -28,7 +28,9 @@ export default function LoginPage() {
         setError('Sai tên đăng nhập hoặc mật khẩu.')
         return
       }
-      navigate(from, { replace: true })
+      // Redirect based on role
+      const target = session.role === 'ADMIN' ? '/admin' : (from || '/lop')
+      navigate(target, { replace: true })
     } finally {
       setSubmitting(false)
     }
