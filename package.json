@@ -1,7 +1,8 @@
 {
   "name": "quanlydiem",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "Ứng dụng quản lý nhập liệu điểm và xuất báo cáo cho giáo viên",
   "type": "module",
   "scripts": {
     "dev": "vite",

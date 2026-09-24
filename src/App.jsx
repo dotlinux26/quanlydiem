@@ -4,10 +4,11 @@ function App() {
   return (
     <div className="app">
       <main className="app-shell">
-        <h1>Ứng dụng Quản lý điểm</h1>
+        <h1>Ứng dụng quản lý nhập liệu điểm và xuất báo cáo cho giáo viên</h1>
         <p>
-          Hệ thống quản lý nhập liệu và báo cáo điểm cho giáo viên — thay thế
-          quy trình nhập, quản lý, tra cứu và xuất báo cáo điểm thủ công.
+          Hệ thống hỗ trợ giáo viên nhập, quản lý, tra cứu điểm và xuất báo cáo
+          — thay thế quy trình nhập, quản lý, tra cứu và xuất báo cáo điểm thủ
+          công.
         </p>
         <section className="roles">
           <article>
