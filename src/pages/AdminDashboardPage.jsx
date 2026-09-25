@@ -63,7 +63,7 @@ export default function AdminDashboardPage() {
               <h4 style={{ margin: '0 0 0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>👤 Quản lý tài khoản</h4>
               <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.875rem', color: '#475569' }}>
                 <li>Tạo / Sửa / Xóa tài khoản GV</li>
-                <li>Phân vai trò (GV / Admin)</li>
+                <li>Phân vai trò (GV / Người quản lý)</li>
                 <li>Reset mật khẩu, khóa tài khoản</li>
               </ul>
             </div>

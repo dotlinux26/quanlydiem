@@ -3,7 +3,7 @@ import { useAuth } from '../hooks/useAuth.js'
 import { ROLE_LABELS } from '../constants/roles.js'
 
 export default function Navbar() {
-  const { user, logout } = useAuth()
+  const { user, logout, isQuanLy } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -22,7 +22,7 @@ export default function Navbar() {
         >
           Lớp học
         </Link>
-        {user?.role === 'ADMIN' && (
+        {isQuanLy && (
           <Link
             to="/admin"
             className={location.pathname.startsWith('/admin') ? 'active' : ''}
@@ -32,7 +32,7 @@ export default function Navbar() {
         )}
       </nav>
       <div className="navbar-user">
-        <span className={`role-badge ${user?.role === 'ADMIN' ? 'admin' : ''}`}>
+        <span className={`role-badge ${isQuanLy ? 'quan-ly' : ''}`}>
           {ROLE_LABELS[user?.role] ?? user?.role}
         </span>
         <span style={{ color: '#64748b', fontSize: '0.8rem' }}>{user?.name}</span>

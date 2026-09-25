@@ -29,7 +29,7 @@ export default function LoginPage() {
         return
       }
       // Redirect based on role
-      const target = session.role === 'ADMIN' ? '/admin' : (from || '/lop')
+      const target = session.role === 'QUAN_LY' ? '/admin' : (from || '/lop')
       navigate(target, { replace: true })
     } finally {
       setSubmitting(false)
@@ -80,7 +80,7 @@ export default function LoginPage() {
           <p>Tài khoản demo:</p>
           <p>
             Giáo viên: <code>gv01</code> / <code>123456</code><br />
-            Quản trị: <code>admin01</code> / <code>admin123</code>
+            Người quản lý: <code>quanly01</code> / <code>123456</code>
           </p>
           <Link to="/" style={{ marginTop: '1rem', display: 'inline-block' }}>← Về trang giới thiệu</Link>
         </div>

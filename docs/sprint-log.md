@@ -4,29 +4,31 @@
 
 Dự án được thực hiện trong **3 Sprint**. Mỗi Sprint tối đa không quá 4 tuần. Điểm story point và ước tính Effort giữa các Sprint được phân bổ tương đối cân bằng nhau.
 
-**Bảng 7.1. Phân bổ User Story cho các Sprint**
+**Bảng 7.1. Phân bổ User Story cho các Sprint (11 US)**
 
 | UID | User Story | Story Point | Estimation Effort | Sprint | Status |
 |-----|------------|-------------|-------------------|--------|--------|
 | US-001 | Xem danh sách lớp và sinh viên được phân công | 3 | 4 giờ | Sprint 1 (V0) | **Done** |
-| US-003 | Nhập điểm | 3 | 5 giờ | Sprint 1 (V0) | **Done** |
-| US-004 | Sửa điểm | 2 | 3 giờ | Sprint 1 (V0) | **Done** |
-| US-005 | Kiểm tra điểm hợp lệ và tính điểm tổng kết | 5 | 8 giờ | Sprint 1 (V0) | **Done** |
-| US-007 | Xuất bảng điểm (Excel/CSV) | 3 | 5 giờ | Sprint 1 (V0) | **Done** |
-| US-006 | Tra cứu điểm theo lớp, môn, sinh viên | 3 | 5 giờ | Sprint 2 (V1.0) | To Do |
-| US-008 | Báo cáo tổng hợp kết quả học tập | 5 | 8 giờ | Sprint 2 (V1.0) | To Do |
-| US-002 | Quản lý lớp, sinh viên, môn học (CRUD) | 5 | 8 giờ | Sprint 3 (V2.0) | To Do |
-| US-009 | Quản lý tài khoản và phân quyền | 5 | 8 giờ | Sprint 3 (V2.0) | To Do |
+| US-005 | Nhập điểm | 3 | 5 giờ | Sprint 1 (V0) | **Done** |
+| US-006 | Sửa điểm | 2 | 3 giờ | Sprint 1 (V0) | **Done** |
+| US-007 | Kiểm tra điểm hợp lệ và tính điểm tổng kết | 5 | 8 giờ | Sprint 1 (V0) | **Done** |
+| US-009 | Xuất bảng điểm (Excel/CSV) | 3 | 5 giờ | Sprint 1 (V0) | **Done** |
+| US-002 | Quản lý lớp học (CRUD + phân công GV) | 5 | 8 giờ | Sprint 2 (V1.0) | To Do |
+| US-003 | Quản lý sinh viên (CRUD + import Excel) | 5 | 8 giờ | Sprint 2 (V1.0) | To Do |
+| US-004 | Quản lý môn học (CRUD) | 3 | 5 giờ | Sprint 2 (V1.0) | To Do |
+| US-008 | Tra cứu điểm (filter, phân trang) | 3 | 5 giờ | Sprint 2 (V1.0) | To Do |
+| US-010 | Báo cáo tổng hợp (stats + chart) | 5 | 8 giờ | Sprint 3 (V2.0) | To Do |
+| US-011 | Quản trị tài khoản & phân quyền | 5 | 8 giờ | Sprint 3 (V2.0) | To Do |
 
-**Tổng story point:** 34 | **Tổng estimation effort:** 54 giờ
+**Tổng story point:** 44 | **Tổng estimation effort:** 64 giờ
 
 | Sprint | Phiên bản | Story Point | Effort | Thời gian dự kiến | Thời gian thực tế |
 |--------|-----------|-------------|--------|-------------------|-------------------|
-| Sprint 1 | V0 | 16 | 25 giờ | 24/09 - 07/10 | 24/09 - 24/09 (1 ngày, parallel) |
-| Sprint 2 | V1.0 | 11 | 18 giờ | 08/10 - 21/10 | — |
-| Sprint 3 | V2.0 | 10 | 16 giờ | 22/10 - 04/11 | — |
+| Sprint 1 | V0 | 19 | 25 giờ | 24/09 - 07/10 | 24/09 - 24/09 (1 ngày, parallel) |
+| Sprint 2 | V1.0 | 21 | 34 giờ | 08/10 - 21/10 | — |
+| Sprint 3 | V2.0 | 13 | 16 giờ | 22/10 - 04/11 | — |
 
-> **Ghi chú:** Sprint 1 hoàn thành sớm hơn dự kiến do phát triển song song (code + test + docs cùng lúc), và scope mở rộng thêm US-007 (export) vào Sprint 1 thay vì Sprint 2.
+> **Ghi chú:** Sprint 1 hoàn thành sớm hơn dự kiến do phát triển song song (code + test + docs cùng lúc), và scope mở rộng thêm US-009 (export) vào Sprint 1.
 
 ---
 
@@ -38,11 +40,11 @@ Dự án được thực hiện trong **3 Sprint**. Mỗi Sprint tối đa khôn
 
 | UID | User Story | SP | Effort | Status | Acceptance Criteria | Testing | Task owner | Task | Subtask |
 |-----|------------|----|--------|--------|--------------------|---------|------------|------|---------|
-| US-001 | Xem danh sách lớp và sinh viên được phân công | 3 | 4h | **Done** | Hiển thị lớp + SV của GV đăng nhập; Chỉ thấy lớp phân công; Admin thấy tất cả | Đăng nhập gv01 → 3 lớp → click → 5 SV; admin01 → 3 lớp | Nguyễn Đức Cảnh | ClassListPage + StudentListPage | Layout card/table; Service listLops (filter role); Service listSinhViens; Link "Xem sinh viên" |
-| US-003 | Nhập điểm | 3 | 5h | **Done** | Nhập điểm theo lớp + môn; Lưu thành công; Hiển thị trên bảng; Tổng kết auto | Mở /lop/1/diem → nhập 7,5/8/9 → Lưu → tongKet 8,3 | Nguyễn Đức Cảnh | ScoreEntryPage + ScoreForm | ScoreForm 3 input ngang; handleChange real-time; saveRow upsert diemService |
-| US-004 | Sửa điểm | 2 | 3h | **Done** | Sửa điểm đã lưu; Cập nhật tongKet; Ghi nhận updatedAt | Sửa 8→9 → Lưu → tongKet 8,5; status "Đã lưu" | Nguyễn Đức Cảnh | Chức năng sửa điểm | saveDiem upsert (id có thì update); row.status='saved' |
-| US-005 | Kiểm tra điểm hợp lệ và tính điểm tổng kết | 5 | 8h | **Done** | Chặn <0, >10; Chặn chữ ("Điểm không hợp lệ"); tongKet = 0.3×TK+0.3×GK+0.4×CK; format VN dấu phẩy | Unit: 27 testcases (scoreInputError, calcSummary); E2E: 15, abc, 7,5 | Nguyễn Đức Cảnh | utils/score.js + validation | parseScore (hiểu dấu phẩy); scoreInputError; calcSummary; roundTo |
-| US-007 | Xuất bảng điểm (Excel/CSV) | 3 | 5h | **Done** | Nút "Xuất Excel" + "Xuất CSV"; File đúng cột STT, Mã SV, Họ tên, TK, GK, CK, Tổng kết, Trạng thái | E2E: click Xuất Excel → file .xlsx mở được; click Xuất CSV → file .csv | Nguyễn Đức Cảnh | Export feature | SheetJS (xlsx) json_to_sheet; handleExport('xlsx'/'csv'); filename có tên lớp + mã môn |
+| US-001 | Xem danh sách lớp và sinh viên được phân công | 3 | 4h | **Done** | Hiển thị lớp + SV của GV đăng nhập; Chỉ thấy lớp phân công; Người quản lý thấy tất cả | Đăng nhập gv01 → 3 lớp → click → 5 SV; người quản lý → 3 lớp | Nguyễn Đức Cảnh | ClassListPage + StudentListPage | Layout card/table; Service listLops (filter role); Service listSinhViens; Link "Xem sinh viên" |
+| US-005 | Nhập điểm | 3 | 5h | **Done** | Nhập điểm theo lớp + môn; Lưu thành công; Hiển thị trên bảng; Tổng kết auto | Mở /lop/1/diem → nhập 7,5/8/9 → Lưu → tongKet 8,3 | Nguyễn Đức Cảnh | ScoreEntryPage + ScoreForm | ScoreForm 3 input ngang; handleChange real-time; saveRow upsert diemService |
+| US-006 | Sửa điểm | 2 | 3h | **Done** | Sửa điểm đã lưu; Cập nhật tongKet; Ghi nhận updatedAt | Sửa 8→9 → Lưu → tongKet 8,5; status "Đã lưu" | Nguyễn Đức Cảnh | Chức năng sửa điểm | saveDiem upsert (id có thì update); row.status='saved' |
+| US-007 | Kiểm tra điểm hợp lệ và tính điểm tổng kết | 5 | 8h | **Done** | Chặn <0, >10; Chặn chữ ("Điểm không hợp lệ"); tongKet = 0.3×TK+0.3×GK+0.4×CK; format VN dấu phẩy | Unit: 27 testcases (scoreInputError, calcSummary); E2E: 15, abc, 7,5 | Nguyễn Đức Cảnh | utils/score.js + validation | parseScore (hiểu dấu phẩy); scoreInputError; calcSummary; roundTo |
+| US-009 | Xuất bảng điểm (Excel/CSV) | 3 | 5h | **Done** | Nút "Xuất Excel" + "Xuất CSV"; File đúng cột STT, Mã SV, Họ tên, TK, GK, CK, Tổng kết, Trạng thái | E2E: click Xuất Excel → file .xlsx mở được; click Xuất CSV → file .csv | Nguyễn Đức Cảnh | Export feature | SheetJS (xlsx) json_to_sheet; handleExport('xlsx'/'csv'); filename có tên lớp + mã môn |
 
 **Bug fixes trong Sprint 1 (từ E2E testing):**
 
@@ -60,8 +62,10 @@ Dự án được thực hiện trong **3 Sprint**. Mỗi Sprint tối đa khôn
 
 | UID | User Story | SP | Effort | Status | Acceptance Criteria | Testing | Task owner | Task | Subtask |
 |-----|------------|----|--------|--------|--------------------|---------|------------|------|---------|
-| US-006 | Tra cứu điểm theo lớp, môn, sinh viên | 3 | 5h | To Do | Form lọc (lớp, môn, SV); Kết quả table có phân trang; Tổng kết hiển thị | Unit: filter logic; E2E: lọc lớp 1 + môn 1 → 5 rows | Nguyễn Đức Cảnh | ScoreLookupPage | Form lọc (select + input); Service listDiems query; Table pagination |
-| US-008 | Báo cáo tổng hợp kết quả học tập | 5 | 8h | To Do | Thống kê: max/min/avg, tỉ lệ đạt (≥5), phân bố điểm; Biểu đồ (chart.js) | Unit: stats functions; E2E: mở báo cáo lớp 1 → số liệu khớp | Nguyễn Đức Cảnh | ReportPage | Tính toán stats; Chart.js bar/pie; Export PDF (jspdf) |
+| US-002 | Quản lý lớp học (CRUD + phân công GV) | 5 | 8h | To Do | Người quản lý: Thêm/Sửa/Xóa lớp, phân công GV; Modal confirm xóa | Unit: CRUD service; E2E: người quản lý tạo lớp → thấy ngay | Nguyễn Đức Cảnh | AdminClassPage | Form thêm/sửa (Modal); Table với actions; Phân công GV dropdown |
+| US-003 | Quản lý sinh viên (CRUD + import Excel) | 5 | 8h | To Do | Người quản lý: Thêm/Sửa/Xóa SV, import Excel, chuyển lớp | Unit: CRUD service; E2E: import file .xlsx → 5 SV/lớp | Nguyễn Đức Cảnh | AdminStudentsPage | Form thêm/sửa (Modal); Import Excel; Chuyển lớp dropdown |
+| US-004 | Quản lý môn học (CRUD) | 3 | 5h | To Do | Người quản lý: Thêm/Sửa/Xóa môn học (mã, tên, tín chỉ) | Unit: CRUD service; E2E: người quản lý CRUD môn | Nguyễn Đức Cảnh | AdminSubjectsPage | Form thêm/sửa (Modal); Table actions |
+| US-008 | Tra cứu điểm (filter, phân trang) | 3 | 5h | To Do | Form lọc (lớp, môn, SV); Kết quả table có phân trang 20 dòng; tongKet hiển thị | Unit: filter logic; E2E: lọc lớp 1 + môn 1 → 5 rows | Nguyễn Đức Cảnh | ScoreLookupPage | Form lọc (select + input); Service listDiems query; Table pagination |
 
 ---
 
@@ -71,8 +75,8 @@ Dự án được thực hiện trong **3 Sprint**. Mỗi Sprint tối đa khôn
 
 | UID | User Story | SP | Effort | Status | Acceptance Criteria | Testing | Task owner | Task | Subtask |
 |-----|------------|----|--------|--------|--------------------|---------|------------|------|---------|
-| US-002 | Quản lý lớp, sinh viên, môn học (CRUD) | 5 | 8h | To Do | Admin: Thêm/Sửa/Xóa lớp, SV, môn; Modal confirm xóa; Phân công GV cho lớp | Unit: CRUD service; E2E: admin tạo lớp → thấy ngay | Nguyễn Đức Cảnh | AdminClassPage | Form thêm/sửa (Modal); Table với actions; Phân công GV dropdown |
-| US-009 | Quản lý tài khoản và phân quyền | 5 | 8h | To Do | Admin: Tạo/sửa/xóa tài khoản; Set role GIAO_VIEN/ADMIN; Link GV; Bảo vệ route | Unit: authService createAccount; E2E: tạo gv02 → login → thấy lớp phân công | Nguyễn Đức Cảnh | AdminAccountPage + LoginPage | Table tài khoản; Modal form; Role badge; ProtectedRoute |
+| US-010 | Báo cáo tổng hợp (stats + chart) | 5 | 8h | To Do | Thống kê: max/min/avg, tỉ lệ đạt (≥5), phân bố điểm; Biểu đồ (Chart.js bar/pie); Export PDF | Unit: stats functions; E2E: mở báo cáo lớp 1 → số liệu khớp | Nguyễn Đức Cảnh | ReportPage | Tính toán stats; Chart.js bar/pie; Export PDF (jspdf) |
+| US-011 | Quản trị tài khoản & phân quyền | 5 | 8h | To Do | Người quản lý: Tạo/Sửa/Xóa tài khoản GV, gán vai trò, reset pwd, khóa/mở | Unit: authService createAccount; E2E: tạo gv02 → login → thấy lớp phân công | Nguyễn Đức Cảnh | AdminAccountsPage | Table tài khoản; Modal form; Role badge (GV/QL); ProtectedRoute |
 
 ---
 
@@ -86,7 +90,7 @@ Dự án được thực hiện trong **3 Sprint**. Mỗi Sprint tối đa khôn
 
 **Kế hoạch thực hiện (thực tế):**
 - **Sáng:** Khởi tạo React + Vite, cấu trúc thư mục, Design System CSS (CSS variables, components), Auth Context + ProtectedRoute
-- **Trưa:** ClassListPage, StudentListPage, LoginPage, LandingPage, Mock DB seed (15 SV, 3 lớp, 3 môn, 2 user)
+- **Trưa:** ClassListPage, StudentListPage, LoginPage, LandingPage, Mock DB seed (15 SV, 3 lớp, 3 môn, 2 user: GV + Người quản lý)
 - **Chiều:** ScoreEntryPage (inline editing, ScoreForm ngang), Validation real-time, TongKet auto, Export xlsx/csv (SheetJS), Bug fixes (#1, #2, #3)
 - **Tối:** Unit test (27 cases), E2E test (14 cases), Lint + Build, Commit + Push, GitHub Issues tạo + đóng
 
@@ -94,14 +98,14 @@ Dự án được thực hiện trong **3 Sprint**. Mỗi Sprint tối đa khôn
 
 | Tính năng | Mô tả | US liên quan |
 |-----------|-------|--------------|
-| Đăng nhập phân quyền | gv01/123456 (GV), admin01/admin123 (Admin); redirect `from` | US-009 |
-| Danh sách lớp | Card/table responsive; GV chỉ thấy lớp phân công; Admin thấy tất cả | US-001 |
+| Đăng nhập phân quyền | gv01/123456 (GV), quanly01/123456 (Người quản lý); redirect `from` | US-011 |
+| Danh sách lớp | Card/table responsive; GV chỉ thấy lớp phân công; Người quản lý thấy tất cả | US-001 |
 | Danh sách sinh viên | 5 SV/lớp; Link "Nhập điểm" mỗi hàng (`?sv=`); Nút "Nhập điểm cả lớp" | US-001 |
-| Nhập/Sửa điểm | ScoreForm 3 input ngang (Thường/Giữa/Cuối); Validate real-time; Lưu/upsert | US-003, US-004 |
-| Kiểm tra điểm hợp lệ | Chặn <0, >10; Chặn chữ; Hỗ trợ dấu phẩy VN (7,5); Tổng kết auto | US-005 |
+| Nhập/Sửa điểm | ScoreForm 3 input ngang (Thường/Giữa/Cuối); Validate real-time; Lưu/upsert | US-005, US-006 |
+| Kiểm tra điểm hợp lệ | Chặn <0, >10; Chặn chữ; Hỗ trợ dấu phẩy VN (7,5); Tổng kết auto | US-007 |
 | Confirm đổi môn | Nếu có hàng dirty → `window.confirm` trước khi switch | Bug #1 |
 | Highlight `?sv=` | Link từng SV → scroll + highlight row vàng | Bug #3 |
-| Xuất Excel/CSV | 2 nút toolbar; SheetJS; Filename `BangDiem_{Lop}_{Mon}.xlsx` | US-007 |
+| Xuất Excel/CSV | 2 nút toolbar; SheetJS; Filename `BangDiem_{Lop}_{Mon}.xlsx` | US-009 |
 | UI/UX hiện đại | Design system CSS variables; Navbar sticky; Card + Table responsive; Modal accessible; Landing marketing page | — |
 
 **Kết quả kiểm thử:**
@@ -118,13 +122,13 @@ Dự án được thực hiện trong **3 Sprint**. Mỗi Sprint tối đa khôn
 
 **Thời gian dự kiến:** 08/10/2026 - 21/10/2026
 
-**Mục tiêu:** Triển khai tra cứu điểm, xuất bảng điểm nâng cao và báo cáo tổng hợp
+**Mục tiêu:** Triển khai quản trị dữ liệu (Lớp/SV/Môn) và tra cứu điểm
 
 **Các tính năng dự kiến:**
-- Tra cứu điểm theo lớp, môn, sinh viên (ScoreLookupPage)
-- Báo cáo tổng hợp kết quả học tập (ReportPage + Chart.js)
-- Xuất PDF báo cáo (jspdf)
-- Phân trang, sắp xếp bảng dữ liệu
+- Quản lý lớp học CRUD + phân công GV (AdminClassPage + Modal)
+- Quản lý sinh viên CRUD + import Excel (AdminStudentsPage)
+- Quản lý môn học CRUD (AdminSubjectsPage)
+- Tra cứu điểm filter + phân trang (ScoreLookupPage)
 
 ---
 
@@ -132,11 +136,11 @@ Dự án được thực hiện trong **3 Sprint**. Mỗi Sprint tối đa khôn
 
 **Thời gian dự kiến:** 22/10/2026 - 04/11/2026
 
-**Mục tiêu:** Hoàn thiện khối quản trị viên và phân quyền, phát hành sản phẩm v2.0.0
+**Mục tiêu:** Hoàn thiện báo cáo tổng hợp và quản trị tài khoản, phát hành sản phẩm v2.0.0
 
 **Các tính năng dự kiến:**
-- Quản lý lớp, sinh viên, môn học CRUD (AdminClassPage + Modal)
-- Quản lý tài khoản giáo viên + phân quyền (AdminAccountPage)
+- Báo cáo tổng hợp + Chart.js (ReportPage)
+- Quản trị tài khoản & phân quyền (AdminAccountsPage)
 - Phân công giáo viên cho lớp
 - Audit log (tùy chọn)
 - Deploy production + tài liệu người dùng cuối
@@ -161,7 +165,7 @@ Dự án được thực hiện trong **3 Sprint**. Mỗi Sprint tối đa khôn
 |---------------------|------------------|---------------------|
 | Viết ADR cho quyết định kiến trúc (ScoreForm layout, auth flow) | Commit trực tiếp `main` — sau dùng feature branch + PR | Chạy full test suite (unit + e2e) trước khi push |
 | Thêm screenshot/video vào PR description | Hardcode màu trong component — dùng CSS variables | Conventional commit message (`feat:`, `fix:`, `docs:`) |
-| Tách component nhỏ hơn (ScoreCell, ScoreInput) | Copy-paste inline style — dùng class CSS | Cập nhật docs song song với code |
+| Tách component nhỏ hơn (ScoreCell, ScoreInput) | Copy-paste inline style — dùng CSS variables | Cập nhật docs song song với code |
 
 **Action items cho Sprint 2:**
 1. Tạo feature branch cho mỗi US
@@ -173,4 +177,4 @@ Dự án được thực hiện trong **3 Sprint**. Mỗi Sprint tối đa khôn
 
 ## 7.5. Kết luận chương 7
 
-Chương 7 trình bày nhật ký 3 Sprint theo Scrum. **Sprint 1 (V0) đã hoàn thành** với 5 User Story (US-001,003,004,005,007) = 16 SP, bao gồm cả 3 bug fix từ E2E testing. Phiên bản V0 cung cấp đầy đủ tính năng cốt lõi cho giáo viên: xem lớp/SV, nhập/sửa điểm có validation real-time, tính tổng kết tự động, xuất Excel/CSV, UI/UX hiện đại responsive. Sprint 2 và 3 đang ở giai đoạn kế hoạch, sẽ triển khai tra cứu, báo cáo, và khối quản trị. Dự án tuân thủ Definition of Done: lint + build + unit test + e2e test + AC verified + docs updated.
+Chương 7 trình bày nhật ký 3 Sprint theo Scrum. **Sprint 1 (V0) đã hoàn thành** với 5 User Story (US-001,005,006,007,009) = 19 SP, bao gồm cả 3 bug fix từ E2E testing. Phiên bản V0 cung cấp đầy đủ tính năng cốt lõi cho giáo viên: xem lớp/SV, nhập/sửa điểm có validation real-time, tính tổng kết tự động, xuất Excel/CSV, UI/UX hiện đại responsive. Sprint 2 và 3 đang ở giai đoạn kế hoạch, sẽ triển khai quản trị dữ liệu (Lớp/SV/Môn), tra cứu, báo cáo tổng hợp, và quản trị tài khoản. Dự án tuân thủ Definition of Done: lint + build + unit test + e2e test + AC verified + docs updated.

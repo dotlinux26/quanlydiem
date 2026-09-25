@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     isAuthed: Boolean(user),
-    isAdmin: user?.role === ROLES.ADMIN,
+    isQuanLy: user?.role === ROLES.QUAN_LY,
     isGiaoVien: user?.role === ROLES.GIAO_VIEN,
     login,
     logout,

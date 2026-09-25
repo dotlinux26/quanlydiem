@@ -4,19 +4,21 @@
 
 Sử dụng định dạng tiêu chuẩn: "As a [user], I want [goal] so that [reason]"
 
-**Bảng 2.1. Danh sách các user story trong Product backlog**
+**Bảng 2.1. Danh sách các user story trong Product backlog (11 US)**
 
 | TT | Theme | Epic | UID | User story |
 |----|-------|------|-----|------------|
-| 1 | Quản lý dữ liệu học tập | Quản lý lớp, sinh viên, môn học | US-001 | As a giáo viên, I want xem danh sách lớp và sinh viên được phân công so that tôi quản lý việc nhập điểm |
-| 2 | Quản lý dữ liệu học tập | Quản lý lớp, sinh viên, môn học | US-002 | As a quản trị viên, I want thêm, sửa, xóa thông tin lớp, sinh viên, môn học so that dữ liệu học tập được duy trì đầy đủ |
-| 3 | Quản lý điểm | Nhập và quản lý điểm | US-003 | As a giáo viên, I want nhập điểm cho sinh viên so that kết quả học tập được lưu lại |
-| 4 | Quản lý điểm | Nhập và quản lý điểm | US-004 | As a giáo viên, I want sửa điểm đã nhập so that kết quả được cập nhật chính xác |
-| 5 | Quản lý điểm | Nhập và quản lý điểm | US-005 | As a giáo viên, I want hệ thống kiểm tra điểm hợp lệ và tính điểm tổng kết so that hạn chế sai sót |
-| 6 | Tra cứu và báo cáo | Tra cứu và xuất báo cáo điểm | US-006 | As a giáo viên, I want tra cứu điểm theo lớp, môn học và sinh viên so that tôi theo dõi kết quả học tập |
-| 7 | Tra cứu và báo cáo | Tra cứu và xuất báo cáo điểm | US-007 | As a giáo viên, I want xuất bảng điểm so that tôi sử dụng trong công tác giảng dạy và quản lý |
-| 8 | Tra cứu và báo cáo | Tra cứu và xuất báo cáo điểm | US-008 | As a giáo viên, I want xem báo cáo tổng hợp kết quả học tập so that tôi đánh giá tình hình của lớp |
-| 9 | Quản lý hệ thống | Quản lý tài khoản và phân quyền | US-009 | As a quản trị viên, I want quản lý tài khoản và phân quyền người dùng so that quyền truy cập hệ thống được kiểm soát |
+| 1 | Quản lý dữ liệu học tập | Quản lý lớp học | US-001 | As a giáo viên, I want xem danh sách lớp và sinh viên được phân công so that tôi quản lý việc nhập điểm |
+| 2 | Quản lý dữ liệu học tập | Quản lý lớp học | US-002 | As a người quản lý, I want tạo, sửa, xóa lớp học và phân công giáo viên so that duy trì dữ liệu lớp học |
+| 3 | Quản lý dữ liệu học tập | Quản lý sinh viên | US-003 | As a người quản lý, I want tạo, sửa, xóa sinh viên, nhập từ Excel, chuyển lớp so that quản lý danh sách học sinh |
+| 4 | Quản lý dữ liệu học tập | Quản lý môn học | US-004 | As a người quản lý, I want tạo, sửa, xóa môn học (mã, tên, tín chỉ) so that cập nhật chương trình đào tạo |
+| 5 | Quản lý điểm | Nhập & kiểm tra điểm | US-005 | As a giáo viên, I want nhập điểm cho sinh viên theo lớp và môn học so that lưu kết quả học tập |
+| 6 | Quản lý điểm | Nhập & kiểm tra điểm | US-006 | As a giáo viên, I want sửa điểm đã nhập so that cập nhật kết quả chính xác |
+| 7 | Quản lý điểm | Nhập & kiểm tra điểm | US-007 | As a giáo viên, I want hệ thống kiểm tra điểm hợp lệ (0–10, bước 0.5) và tính điểm tổng kết (0.3/0.3/0.4) so that hạn chế sai sót |
+| 8 | Tra cứu & Báo cáo | Tra cứu & xuất báo cáo | US-008 | As a giáo viên, I want tra cứu điểm theo lớp, môn học, sinh viên có phân trang so that theo dõi kết quả |
+| 9 | Tra cứu & Báo cáo | Tra cứu & xuất báo cáo | US-009 | As a giáo viên, I want xuất bảng điểm ra file Excel (.xlsx) và CSV so that dùng trong công tác giảng dạy |
+| 10 | Tra cứu & Báo cáo | Tra cứu & xuất báo cáo | US-010 | As a giáo viên, I want xem báo cáo tổng hợp (max/min/avg, % đạt, biểu đồ) so that đánh giá tình hình lớp |
+| 11 | Quản trị hệ thống | Quản trị tài khoản | US-011 | As a người quản lý, I want tạo, sửa, xóa tài khoản giáo viên, gán vai trò, reset mật khẩu so that kiểm soát quyền truy cập |
 
 ## 2.2.2. Xác định tiêu chí chấp nhận cho các câu chuyện người dùng
 
@@ -24,15 +26,17 @@ Sử dụng định dạng tiêu chuẩn: "As a [user], I want [goal] so that [r
 
 | UID | As a... | I want to be able to... | So that... | Acceptance Criteria | Testing |
 |-----|---------|------------------------|------------|--------------------|---------|
-| US-001 | giáo viên | xem danh sách lớp và sinh viên được phân công | quản lý việc nhập điểm | Hiển thị danh sách lớp + sinh viên của giáo viên đăng nhập; Chỉ thấy lớp được phân công; Admin thấy tất cả | Đăng nhập `gv01` → kiểm tra 3 lớp, click lớp → 5 SV |
-| US-002 | quản trị viên | thêm, sửa, xóa lớp, sinh viên, môn học | duy trì dữ liệu học tập | Thêm/Sửa/Xóa thành công và phản ánh ngay; Xóa có xác nhận Modal | Admin thao tác CRUD → kiểm tra dữ liệu thay đổi |
-| US-003 | giáo viên | nhập điểm cho sinh viên | lưu kết quả học tập | Nhập điểm theo lớp + môn; Lưu thành công và hiển thị trên bảng điểm; Tổng kết tự động | Mở form nhập → nhập 7,5/8/9 → lưu → tongKet 8,3 |
-| US-004 | giáo viên | sửa điểm đã nhập | cập nhật kết quả chính xác | Sửa điểm và lưu thay đổi; Ghi nhận thời gian sửa; Tổng kết cập nhật lại | Sửa 1 điểm → lưu → kiểm tra giá trị mới & tongKet |
-| US-005 | giáo viên | hệ thống kiểm tra điểm hợp lệ và tính điểm tổng kết | hạn chế sai sót | Chặn điểm <0 hoặc >10; Nhập chữ → báo "Điểm không hợp lệ"; Tính tongKet = TK×0.3+GK×0.3+CK×0.4 | Nhập 15 → báo lỗi; nhập "abc" → báo lỗi; nhập hợp lệ → tongKet đúng |
-| US-006 | giáo viên | tra cứu điểm theo lớp, môn học và sinh viên | theo dõi kết quả | Lọc theo lớp/môn/SV; Kết quả đúng với dữ liệu; Có phân trang | Nhập bộ lọc → kiểm tra kết quả hiển thị |
-| US-007 | giáo viên | xuất bảng điểm (Excel/CSV) | sử dụng trong công tác giảng dạy | Xuất đầy đủ cột (STT, MSSV, Họ tên, TK, GK, CK, Tổng kết, Trạng thái); Tải được file .xlsx/.csv | Xuất bảng điểm lớp → mở file → kiểm tra nội dung |
-| US-008 | giáo viên | xem báo cáo tổng hợp kết quả học tập | đánh giá tình hình của lớp | Thống kê: điểm cao/thấp/trung bình, tỉ lệ đạt/không đạt, phân bố | Mở trang báo cáo → kiểm tra số liệu khớp |
-| US-009 | quản trị viên | quản lý tài khoản và phân quyền | kiểm soát quyền truy cập | Tạo/sửa/xóa tài khoản; Phân vai trò giao_vien/admin; Truy cập theo đúng vai trò | Tạo tài khoản gv → đăng nhập → kiểm tra quyền hạn |
+| US-001 | giáo viên | xem danh sách lớp và sinh viên được phân công | quản lý việc nhập điểm | Hiển thị danh sách lớp + SV của GV đăng nhập; Chỉ thấy lớp được phân công; Người quản lý thấy tất cả | Đăng nhập `gv01` → 3 lớp, click lớp → 5 SV |
+| US-002 | người quản lý | tạo, sửa, xóa lớp học, phân công giáo viên | duy trì dữ liệu lớp học | Thêm lớp thành công; Phân công GV dropdown; Xóa có confirm, cascade điểm | Người quản lý CRUD → kiểm tra dữ liệu thay đổi |
+| US-003 | người quản lý | tạo, sửa, xóa SV, import Excel, chuyển lớp | quản lý danh sách học sinh | Thêm SV; Import file .xlsx → 5 SV/lớp; Chuyển lớp cập nhật lop_id; Xóa có confirm | Người quản lý thao tác → kiểm tra thay đổi |
+| US-004 | người quản lý | tạo, sửa, xóa môn học (mã, tên, tín chỉ) | cập nhật chương trình đào tạo | Mã môn unique; Sửa cập nhật ngay; Xóa xóa cả điểm môn đó | Người quản lý CRUD → kiểm tra |
+| US-005 | giáo viên | nhập điểm (TK/GK/CK) theo lớp + môn | lưu kết quả học tập | Form 3 input ngang; Nhập 7,5 được; Lưu upsert, tongKet tự động | Mở form → nhập 7,5/8/9 → Lưu → tongKet 8,3 |
+| US-006 | giáo viên | sửa điểm đã nhập | cập nhật kết quả chính xác | Sửa trực tiếp ô nhập; tongKet tính lại; updated_at cập nhật | Sửa 1 điểm → lưu → kiểm tra giá trị mới & tongKet |
+| US-007 | giáo viên | hệ thống validate (0–10, bước 0.5) + tính tongKet (0.3/0.3/0.4) | hạn chế sai sót | Nhập 15/-1 → lỗi; Nhập "abc" → lỗi; 8/7,5/9 → tongKet 8,3; Sửa → tính lại | Nhập 15, abc, 7,5 → lỗi/đúng |
+| US-008 | giáo viên | tra cứu điểm (filter lớp/môn/SV, phân trang) | theo dõi kết quả | Bộ lọc đa tiêu chí; Phân trang 20 dòng; Hiển thị đủ 8 cột | Lọc → kiểm tra kết quả |
+| US-009 | giáo viên | xuất bảng điểm Excel/CSV | dùng trong giảng dạy | File .xlsx/.csv; 8 cột (STT, Mã SV, Họ tên, TK, GK, CK, Tổng kết, Trạng thái) | Xuất → mở file kiểm tra |
+| US-010 | giáo viên | báo cáo tổng hợp (max/min/avg, % đạt, chart) | đánh giá tình hình lớp | Stats đúng; Chart.js bar/pie; Export PDF | Xem báo cáo → số liệu khớp |
+| US-011 | người quản lý | CRUD tài khoản GV, gán vai trò, reset pwd | kiểm soát quyền truy cập | Tạo GV mới → login được; Set vai trò; Reset pwd, khóa/mở; Không xóa người quản lý cuối | Tạo GV → login → kiểm tra quyền |
 
 ## 2.2.3. Ước tính độ phức tạp câu chuyện người dùng
 
@@ -43,17 +47,19 @@ Sử dụng kỹ thuật Planning Poker (1 người) để ước tính story po
 | UID | User story | Story point | Estimation Effort | Sprint | Trạng thái |
 |-----|------------|-------------|-------------------|--------|------------|
 | US-001 | Xem danh sách lớp và sinh viên được phân công | 3 | 4 giờ | Sprint 1 (V0) | **Done** |
-| US-002 | Quản lý lớp, sinh viên, môn học (CRUD) | 5 | 8 giờ | Sprint 3 (V2.0) | To Do |
-| US-003 | Nhập điểm | 3 | 5 giờ | Sprint 1 (V0) | **Done** |
-| US-004 | Sửa điểm | 2 | 3 giờ | Sprint 1 (V0) | **Done** |
-| US-005 | Kiểm tra điểm hợp lệ và tính điểm tổng kết | 5 | 8 giờ | Sprint 1 (V0) | **Done** |
-| US-006 | Tra cứu điểm theo lớp, môn, sinh viên | 3 | 5 giờ | Sprint 2 (V1.0) | To Do |
-| US-007 | Xuất bảng điểm (Excel/CSV) | 3 | 5 giờ | Sprint 1 (V0) | **Done** |
-| US-008 | Báo cáo tổng hợp kết quả học tập | 5 | 8 giờ | Sprint 2 (V1.0) | To Do |
-| US-009 | Quản lý tài khoản và phân quyền | 5 | 8 giờ | Sprint 3 (V2.0) | To Do |
+| US-005 | Nhập điểm | 3 | 5 giờ | Sprint 1 (V0) | **Done** |
+| US-006 | Sửa điểm | 2 | 3 giờ | Sprint 1 (V0) | **Done** |
+| US-007 | Kiểm tra điểm hợp lệ và tính điểm tổng kết | 5 | 8 giờ | Sprint 1 (V0) | **Done** |
+| US-009 | Xuất bảng điểm (Excel/CSV) | 3 | 5 giờ | Sprint 1 (V0) | **Done** |
+| US-002 | Quản lý lớp học (CRUD + phân công GV) | 5 | 8 giờ | Sprint 2 (V1.0) | To Do |
+| US-003 | Quản lý sinh viên (CRUD + import Excel) | 5 | 8 giờ | Sprint 2 (V1.0) | To Do |
+| US-004 | Quản lý môn học (CRUD) | 3 | 5 giờ | Sprint 2 (V1.0) | To Do |
+| US-008 | Tra cứu điểm (filter, phân trang) | 3 | 5 giờ | Sprint 2 (V1.0) | To Do |
+| US-010 | Báo cáo tổng hợp (stats + chart) | 5 | 8 giờ | Sprint 3 (V2.0) | To Do |
+| US-011 | Quản trị tài khoản & phân quyền | 5 | 8 giờ | Sprint 3 (V2.0) | To Do |
 
-**Tổng story point:** 34
-**Tổng estimation effort:** 54 giờ
+**Tổng story point:** 44
+**Tổng estimation effort:** 64 giờ
 
 ## 2.2.4. Tạo bản đồ câu chuyện và tinh chỉnh các câu chuyện người dùng
 
@@ -62,14 +68,16 @@ Sử dụng kỹ thuật Planning Poker (1 người) để ước tính story po
 | UID | User story | Story point | Estimation Effort | Thứ tự ưu tiên | Sprint |
 |-----|------------|-------------|-------------------|----------------|--------|
 | US-001 | Xem danh sách lớp và sinh viên được phân công | 3 | 4 giờ | 1 | Sprint 1 |
-| US-003 | Nhập điểm | 3 | 5 giờ | 2 | Sprint 1 |
-| US-004 | Sửa điểm | 2 | 3 giờ | 3 | Sprint 1 |
-| US-005 | Kiểm tra điểm hợp lệ và tính điểm tổng kết | 5 | 8 giờ | 4 | Sprint 1 |
-| US-007 | Xuất bảng điểm (Excel/CSV) | 3 | 5 giờ | 5 | Sprint 1 |
-| US-006 | Tra cứu điểm theo lớp, môn, sinh viên | 3 | 5 giờ | 6 | Sprint 2 |
-| US-008 | Báo cáo tổng hợp kết quả học tập | 5 | 8 giờ | 7 | Sprint 2 |
-| US-002 | Quản lý lớp, sinh viên, môn học (CRUD) | 5 | 8 giờ | 8 | Sprint 3 |
-| US-009 | Quản lý tài khoản và phân quyền | 5 | 8 giờ | 9 | Sprint 3 |
+| US-005 | Nhập điểm | 3 | 5 giờ | 2 | Sprint 1 |
+| US-006 | Sửa điểm | 2 | 3 giờ | 3 | Sprint 1 |
+| US-007 | Kiểm tra điểm hợp lệ và tính điểm tổng kết | 5 | 8 giờ | 4 | Sprint 1 |
+| US-009 | Xuất bảng điểm (Excel/CSV) | 3 | 5 giờ | 5 | Sprint 1 |
+| US-002 | Quản lý lớp học (CRUD + phân công GV) | 5 | 8 giờ | 6 | Sprint 2 |
+| US-003 | Quản lý sinh viên (CRUD + import Excel) | 5 | 8 giờ | 7 | Sprint 2 |
+| US-004 | Quản lý môn học (CRUD) | 3 | 5 giờ | 8 | Sprint 2 |
+| US-008 | Tra cứu điểm (filter, phân trang) | 3 | 5 giờ | 9 | Sprint 2 |
+| US-010 | Báo cáo tổng hợp (stats + chart) | 5 | 8 giờ | 10 | Sprint 3 |
+| US-011 | Quản trị tài khoản & phân quyền | 5 | 8 giờ | 11 | Sprint 3 |
 
 ## 2.2.5. Bug Backlog (từ Sprint 1 testing)
 
@@ -81,4 +89,4 @@ Sử dụng kỹ thuật Planning Poker (1 người) để ước tính story po
 
 ## Kết luận chương 2
 
-Product Backlog đã được xây dựng với 9 User Story, tổng 34 story points, 54 giờ effort. Sprint 1 (V0) hoàn thành 5 US (US-001,003,004,005,007) = 16 SP. Các tiêu chí chấp nhận được định nghĩa rõ ràng, có thể đo lường và kiểm thử (unit 27 testcases, e2e 14 testcases). 3 Bug phát hiện trong Sprint 1 đã fix và đóng. Thứ tự ưu tiên dựa trên giá trị nghiệp vụ và phụ thuộc kỹ thuật.
+Product Backlog đã được xây dựng với **11 User Story**, tổng **44 story points**, **64 giờ effort**. Sprint 1 (V0) hoàn thành **5 US** (US-001,005,006,007,009) = **19 SP**. Các tiêu chí chấp nhận được định nghĩa rõ ràng dạng Given/When/Then, có thể đo lường và kiểm thử (unit 27 testcases, e2e 14 testcases). 3 Bug phát hiện trong Sprint 1 đã fix và đóng. Thứ tự ưu tiên dựa trên giá trị nghiệp vụ và phụ thuộc kỹ thuật.

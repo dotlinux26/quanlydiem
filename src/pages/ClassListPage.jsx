@@ -42,7 +42,7 @@ export default function ClassListPage() {
           <div className="empty-state">
             <div className="icon" aria-hidden="true">📚</div>
             <h3>Chưa có lớp nào</h3>
-            <p>Bạn chưa được phân công lớp học nào. Vui lòng liên hệ quản trị viên.</p>
+            <p>Bạn chưa được phân công lớp học nào. Vui lòng liên hệ người quản lý.</p>
           </div>
         </div>
       ) : (

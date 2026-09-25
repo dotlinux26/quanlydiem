@@ -27,18 +27,21 @@ src/
 ├── App.css                  # Design system (CSS variables, components)
 ├── index.css                # Reset & base styles
 ├── constants/
-│   ├── roles.js             # ROLES enum, labels
+│   ├── roles.js             # ROLES enum, labels (GIAO_VIEN, QUAN_LY)
 │   └── scoreRules.js        # SCORE config, SCORE_COLUMNS
 ├── utils/
 │   ├── score.js             # parseScore, scoreError, scoreInputError, calcSummary, roundTo
 │   └── format.js            # formatScore (dấu phẩy), formatDate
 ├── db/
-│   ├── seed.js              # Mock data 15 SV, 3 lớp, 3 môn, 2 user, 5 điểm
+│   ├── seed.js              # Mock data 15 SV, 3 lớp, 3 môn, 2 user (GV + QL), 5 điểm
 │   └── store.js             # localStorage CRUD (loadDb, saveDb, resetDb)
 ├── services/
 │   ├── authService.js       # login, logout, getCurrentUser, createAccount
 │   ├── lopService.js        # listLops, getLop, listSinhViens, listMonHocs
-│   └── diemService.js       # listDiems, saveDiem, removeDiem
+│   ├── diemService.js       # listDiems, saveDiem, removeDiem
+│   ├── sinhVienService.js   # CRUD sinh viên (Sprint 2)
+│   ├── monHocService.js     # CRUD môn học (Sprint 2)
+│   └── baoCaoService.js     # Thống kê + chart data (Sprint 3)
 ├── context/
 │   ├── authContext.js       # createContext
 │   └── AuthProvider.jsx     # Auth state, login/logout, role helpers
@@ -55,14 +58,21 @@ src/
 │   ├── LoginPage.jsx        # Form đăng nhập, demo accounts hint
 │   ├── ClassListPage.jsx    # Danh sách lớp (card + table)
 │   ├── StudentListPage.jsx  # Danh sách SV + link nhập điểm / hàng
-│   └── ScoreEntryPage.jsx   # Nhập/sửa điểm, export xlsx/csv, highlight ?sv=
+│   ├── ScoreEntryPage.jsx   # Nhập/sửa điểm, export xlsx/csv, highlight ?sv=
+│   ├── ScoreLookupPage.jsx  # Tra cứu điểm filter + phân trang (Sprint 2)
+│   ├── ReportPage.jsx       # Báo cáo tổng hợp + Chart.js (Sprint 3)
+│   ├── AdminDashboardPage.jsx # Dashboard người quản lý
+│   ├── AdminClassesPage.jsx # CRUD lớp + phân công GV (Sprint 2)
+│   ├── AdminStudentsPage.jsx # CRUD SV + import Excel (Sprint 2)
+│   ├── AdminSubjectsPage.jsx # CRUD môn học (Sprint 2)
+│   └── AdminAccountsPage.jsx # CRUD tài khoản + phân quyền (Sprint 3)
 └── assets/
     └── .gitkeep
 ```
 
 ## 3.2. Module Router & Layout (`App.jsx`, `Layout.jsx`)
 
-**App.jsx** — định nghĩa routes:
+**App.jsx** — định nghĩa routes (tách rõ route GV / Người quản lý):
 ```jsx
 <BrowserRouter>
   <AuthProvider>
@@ -70,19 +80,56 @@ src/
       <Route path="/login" element={<LoginPage />} />
       <Route element={<Layout />}>
         <Route index element={<LandingPage />} />
+        {/* Routes Giáo viên */}
         <Route path="lop" element={
-          <ProtectedRoute roles={[GIAO_VIEN, ADMIN]}>
+          <ProtectedRoute roles={[GIAO_VIEN]}>
             <ClassListPage />
           </ProtectedRoute>
         } />
         <Route path="lop/:id" element={
-          <ProtectedRoute roles={[GIAO_VIEN, ADMIN]}>
+          <ProtectedRoute roles={[GIAO_VIEN]}>
             <StudentListPage />
           </ProtectedRoute>
         } />
         <Route path="lop/:id/diem" element={
-          <ProtectedRoute roles={[GIAO_VIEN, ADMIN]}>
+          <ProtectedRoute roles={[GIAO_VIEN]}>
             <ScoreEntryPage />
+          </ProtectedRoute>
+        } />
+        {/* Routes Người quản lý */}
+        <Route path="admin" element={
+          <ProtectedRoute roles={[QUAN_LY]}>
+            <AdminDashboardPage />
+          </ProtectedRoute>
+        } />
+        <Route path="admin/classes" element={
+          <ProtectedRoute roles={[QUAN_LY]}>
+            <AdminClassesPage />
+          </ProtectedRoute>
+        } />
+        <Route path="admin/students" element={
+          <ProtectedRoute roles={[QUAN_LY]}>
+            <AdminStudentsPage />
+          </ProtectedRoute>
+        } />
+        <Route path="admin/subjects" element={
+          <ProtectedRoute roles={[QUAN_LY]}>
+            <AdminSubjectsPage />
+          </ProtectedRoute>
+        } />
+        <Route path="admin/teachers" element={
+          <ProtectedRoute roles={[QUAN_LY]}>
+            <AdminAccountsPage />
+          </ProtectedRoute>
+        } />
+        <Route path="lookup" element={
+          <ProtectedRoute roles={[GIAO_VIEN, QUAN_LY]}>
+            <ScoreLookupPage />
+          </ProtectedRoute>
+        } />
+        <Route path="report" element={
+          <ProtectedRoute roles={[GIAO_VIEN, QUAN_LY]}>
+            <ReportPage />
           </ProtectedRoute>
         } />
         <Route path="*" element={<NotFound />} />
@@ -105,23 +152,30 @@ src/
 | File | Trách nhiệm |
 |------|-------------|
 | `authContext.js` | `createContext(null)` — context rỗng |
-| `AuthProvider.jsx` | State `user`, `isAuthed`, `isAdmin`, `isGiaoVien`; functions `login()`, `logout()`; sync với `authService` |
+| `AuthProvider.jsx` | State `user`, `isAuthed`, `isQuanLy`, `isGiaoVien`; functions `login()`, `logout()`; sync với `authService` |
 | `useAuth.js` | Hook `useAuth()` — `useContext(AuthContext)` + guard |
-| `ProtectedRoute.jsx` | Guard: nếu `!isAuthed` → redirect `/login` (lưu `from`); nếu `roles` không khớp → redirect `/` |
+| `ProtectedRoute.jsx` | Guard: nếu `!isAuthed` → redirect `/login` (lưu `from`); nếu `roles` không khớp → redirect `/`; tách route GV / QL |
 
 **Phân quyền 2 lớp:**
-1. **Route guard** (`ProtectedRoute`) — chặn truy cập trang
-2. **Service filter** (`lopService.listLops`) — giáo viên chỉ thấy lớp `giaoVienId === user.id`
+1. **Route guard** (`ProtectedRoute`) — chặn truy cập trang theo role
+2. **Service filter** (`lopService.listLops`) — giáo viên chỉ thấy lớp `giaoVienId === user.id`, người quản lý thấy tất cả
 
 ## 3.4. Module Pages (src/pages)
 
 | Trang | Component | User Story | Chức năng chính |
 |-------|-----------|------------|-----------------|
-| `/` | `LandingPage` | — | Giới thiệu, feature grid, CTA đăng nhập |
-| `/login` | `LoginPage` | US-009 | Form login, demo accounts, redirect `from` |
-| `/lop` | `ClassListPage` | US-001 | Danh sách lớp (phân quyền), card empty state |
+| `/` | `LandingPage` | — | Trang chủ marketing, CTA "Bắt đầu ngay" → `/login` |
+| `/login` | `LoginPage` | US-011 | Form đăng nhập, demo accounts (GV + QL), redirect theo role |
+| `/lop` | `ClassListPage` | US-001 | Danh sách lớp (phân quyền), card/table responsive |
 | `/lop/:id` | `StudentListPage` | US-001 | Danh sách SV, link "Nhập điểm" (`?sv=`), nút "Nhập điểm cả lớp" |
-| `/lop/:id/diem` | `ScoreEntryPage` | US-003,004,005,007 | **Core**: nhập/sửa điểm inline, validate real-time, tính tổng kết auto, confirm khi đổi môn có dirty, export xlsx/csv, highlight `?sv=` |
+| `/lop/:id/diem` | `ScoreEntryPage` | US-005,006,007,009 | **Core**: nhập/sửa điểm inline, validate real-time, tính tổng kết auto, confirm khi đổi môn có dirty, export xlsx/csv, highlight `?sv=` |
+| `/lookup` | `ScoreLookupPage` | US-008 | Tra cứu điểm filter (lớp/môn/SV), phân trang (Sprint 2) |
+| `/report` | `ReportPage` | US-010 | Báo cáo tổng hợp (stats + Chart.js bar/pie), export PDF (Sprint 3) |
+| `/admin` | `AdminDashboardPage` | — | Dashboard người quản lý: 4 stat cards link CRUD |
+| `/admin/classes` | `AdminClassesPage` | US-002 | CRUD lớp + Modal + phân công GV (Sprint 2) |
+| `/admin/students` | `AdminStudentsPage` | US-003 | CRUD SV + import Excel + chuyển lớp (Sprint 2) |
+| `/admin/subjects` | `AdminSubjectsPage` | US-004 | CRUD môn học (Sprint 2) |
+| `/admin/teachers` | `AdminAccountsPage` | US-011 | CRUD tài khoản GV + phân quyền + reset pwd (Sprint 3) |
 
 ### ScoreEntryPage — chi tiết state
 
@@ -152,8 +206,8 @@ const [pageError, setPageError] = useState('')
 
 | Component | Props | Chức năng |
 |-----------|-------|-----------|
-| `Navbar` | — | Brand, nav links (active style), user badge (role), logout |
-| `ProtectedRoute` | `children, roles?` | Guard route, redirect login/admin |
+| `Navbar` | — | Brand, nav links (active style theo route), user badge (role: GV/QL), logout |
+| `ProtectedRoute` | `children, roles?` | Guard route, redirect login, tách route GV / QL |
 | `Modal` | `title, children, onCancel, onConfirm, variant` | Accessible dialog (ESC, backdrop, focus trap) |
 | `ScoreForm` | `value, onChange, errors` | **3 input ngang** (thường/giữa/cuối), label trên, error đỏ dưới, width 96px each |
 | `Layout` | — | Shell: Navbar + main content |
@@ -177,9 +231,12 @@ Tất cả service dùng `loadDb()` / `saveDb()` từ `db/store.js`, trả về 
 
 | Service | Hàm chính | Phân quyền |
 |---------|-----------|------------|
-| `authService` | `login`, `logout`, `getCurrentUser`, `createAccount` | — |
-| `lopService` | `listLops(user)`, `getLop(id,user)`, `listSinhViens(id)`, `listMonHocs()` | `listLops` filter theo `user.role === GIAO_VIEN ? giaoVienId === user.id : all` |
+| `authService` | `login`, `logout`, `getCurrentUser`, `createAccount` | Người quản lý tạo tài khoản |
+| `lopService` | `listLops(user)`, `getLop(id,user)`, `listSinhViens(id)`, `listMonHocs()` | `listLops` filter: GV thấy lớp phân công, QL thấy tất cả |
 | `diemService` | `listDiems({lopId,monHocId})`, `saveDiem(data)`, `removeDiem(id)` | `saveDiem` validate 0–10, tự tính `tongKet` |
+| `sinhVienService` | CRUD sinh viên + import Excel | Chỉ người quản lý |
+| `monHocService` | CRUD môn học | Chỉ người quản lý |
+| `baoCaoService` | Thống kê + chart data | GV + QL |
 
 ## 3.7. Module Utils & Constants
 
@@ -187,7 +244,7 @@ Tất cả service dùng `loadDb()` / `saveDb()` từ `db/store.js`, trả về 
 |------|--------|-------|
 | `utils/score.js` | `parseScore`, `scoreError`, `scoreInputError`, `calcSummary`, `roundTo` | `parseScore` hiểu dấu phẩy VN (`7,5` → 7.5); `scoreInputError` bắt chuỗi không phải số |
 | `utils/format.js` | `formatScore`, `formatDate` | `formatScore(8.3)` → `'8,3'` (VN) |
-| `constants/roles.js` | `ROLES`, `ROLE_LABELS` | `GIAO_VIEN: 'GIAO_VIEN'`, `ADMIN: 'ADMIN'` |
+| `constants/roles.js` | `ROLES`, `ROLE_LABELS` | `GIAO_VIEN: 'GIAO_VIEN'`, `QUAN_LY: 'QUAN_LY'`; labels: GV → "Giáo viên", QL → "Người quản lý" |
 | `constants/scoreRules.js` | `SCORE`, `SCORE_COLUMNS` | Thang điểm 0-10, trọng số 0.3/0.3/0.4 |
 
 ## 3.8. Export Excel/CSV (SheetJS)
@@ -217,4 +274,4 @@ function exportToFile(data, fileName, fileType) {
 
 ## Kết luận chương 3
 
-Chương 3 trình bày thiết kế 8 module frontend: Router, Auth, Pages (5 trang), Components (5), Services (3), Utils (2), Constants (2), Export. Mỗi module có trách nhiệm đơn nhất (SRP), tách biệt UI – logic – data. ScoreEntryPage là trang phức tạp nhất với state management chi tiết cho inline editing, validation real-time, dirty tracking, export. Chương 4 sẽ liệt kê công nghệ nguồn mở.
+Chương 3 trình bày thiết kế 10+ module frontend: Router (tách route GV/QL), Auth (role QL/GV), Pages (13 trang), Components (5), Services (6), Utils (2), Constants (2), Export. Mỗi module có trách nhiệm đơn nhất (SRP), tách biệt UI – logic – data. ScoreEntryPage là trang phức tạp nhất với state management chi tiết cho inline editing, validation real-time, dirty tracking, export. Chương 4 sẽ liệt kê công nghệ nguồn mở.

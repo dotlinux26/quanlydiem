@@ -14,15 +14,15 @@ export default function ProtectedRoute({ children, roles }) {
     return <Navigate to="/" replace />
   }
 
-  // Admin không truy cập trang giáo viên
+  // Người quản lý không truy cập trang giáo viên
   const isTeacherRoute = location.pathname.startsWith('/lop')
-  if (user.role === ROLES.ADMIN && isTeacherRoute) {
+  if (user.role === ROLES.QUAN_LY && isTeacherRoute) {
     return <Navigate to="/admin" replace />
   }
 
-  // Giáo viên không truy cập trang admin
-  const isAdminRoute = location.pathname.startsWith('/admin')
-  if (user.role === ROLES.GIAO_VIEN && isAdminRoute) {
+  // Giáo viên không truy cập trang người quản lý
+  const isManagerRoute = location.pathname.startsWith('/admin')
+  if (user.role === ROLES.GIAO_VIEN && isManagerRoute) {
     return <Navigate to="/lop" replace />
   }
 

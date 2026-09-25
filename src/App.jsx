@@ -44,11 +44,11 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            {/* Admin routes - chỉ ADMIN */}
+            {/* Admin routes - chỉ QUAN_LY */}
             <Route
               path="admin"
               element={
-                <ProtectedRoute roles={[ROLES.ADMIN]}>
+                <ProtectedRoute roles={[ROLES.QUAN_LY]}>
                   <AdminDashboardPage />
                 </ProtectedRoute>
               }
@@ -56,7 +56,7 @@ function App() {
             <Route
               path="admin/classes"
               element={
-                <ProtectedRoute roles={[ROLES.ADMIN]}>
+                <ProtectedRoute roles={[ROLES.QUAN_LY]}>
                   <AdminClassesPage />
                 </ProtectedRoute>
               }

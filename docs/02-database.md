@@ -89,8 +89,8 @@ Hiện tại: **localStorage** đóng vai trò embedded database qua module `src
 |-----|-------------|-----------|-------|
 | id | INT | PK, NOT NULL | Mã định danh |
 | username | TEXT | NOT NULL, UNIQUE | Tên đăng nhập |
-| password | TEXT | NOT NULL | Mật khẩu (plaintext cho demo, hash cho production) |
-| role | TEXT | NOT NULL, CHECK('GIAO_VIEN','ADMIN') | Vai trò |
+| password | TEXT | NOT NULL | Mật khẩu (plaintext cho demo, hash bcrypt cho production) |
+| role | TEXT | NOT NULL, CHECK('GIAO_VIEN','QUAN_LY') | Vai trò |
 | name | TEXT | NOT NULL | Tên hiển thị |
 | giaoVienId | INT | FK → giao_vien.id (tương lai), NULLABLE | Liên kết tài khoản - giáo viên |
 
@@ -98,7 +98,7 @@ Hiện tại: **localStorage** đóng vai trò embedded database qua module `src
 | id | username | password | role | name | giaoVienId |
 |----|----------|----------|------|------|------------|
 | 1 | gv01 | 123456 | GIAO_VIEN | Nguyễn Văn Giáo | 1 |
-| 2 | admin01 | admin123 | ADMIN | Quản trị viên | NULL |
+| 2 | quanly01 | 123456 | QUAN_LY | Người quản lý | NULL |
 
 ## 2.3. Store API (localStorage abstraction)
 
@@ -134,7 +134,7 @@ function resetDb() { ... }
 
 | Hàm | Tham số | Trả về | Mô tả |
 |-----|---------|--------|-------|
-| `listLops(user)` | `{id, role, ...}` | `Promise<Lop[]>` | Danh sách lớp: admin lấy tất cả, giáo viên lọc `giaoVienId === user.id` |
+| `listLops(user)` | `{id, role, ...}` | `Promise<Lop[]>` | Danh sách lớp: người quản lý lấy tất cả, giáo viên lọc `giaoVienId === user.id` |
 | `getLop(id, user)` | `id, user` | `Promise<Lop|null>` | Lấy 1 lớp, kiểm tra quyền giáo viên |
 | `listSinhViens(lopId)` | `lopId` | `Promise<SinhVien[]>` | Danh sách SV trong lớp |
 | `listMonHocs()` | - | `Promise<MonHoc[]>` | Danh sách tất cả môn học |
@@ -163,7 +163,7 @@ if (thuongKy !== null && giuaKy !== null && cuoiKy !== null) {
 | `login(username, password)` | string, string | `Promise<Session|null>` | Tìm user trong DB, so sánh password, lưu session vào localStorage |
 | `logout()` | - | `void` | Xóa session |
 | `getCurrentUser()` | - | `Session|null` | Đọc session từ localStorage |
-| `createAccount(account)` | object | `Promise<Account>` | Admin tạo tài khoản mới |
+| `createAccount(account)` | object | `Promise<Account>` | Người quản lý tạo tài khoản mới |
 
 ## 2.5. API Contract (dự kiến cho backend)
 
@@ -175,13 +175,13 @@ if (thuongKy !== null && giuaKy !== null && cuoiKy !== null) {
 | DELETE | `/api/lop/:id` | Xóa lớp | US-002 |
 | GET | `/api/lop/:id/sinh-vien` | Danh sách sinh viên trong lớp | US-001 |
 | GET | `/api/mon-hoc` | Danh sách môn học | US-002 |
-| GET | `/api/diem?lop=&mon=&sv=` | Tra cứu điểm | US-006 |
-| POST | `/api/diem` | Nhập điểm | US-003 |
-| PUT | `/api/diem/:id` | Sửa điểm | US-004 |
-| GET | `/api/diem/:id/tong-ket` | Tính điểm tổng kết | US-005 |
-| GET | `/api/bang-diem/:lop/:mon` | Xuất bảng điểm (Excel/CSV) | US-007 |
-| GET | `/api/bao-cao/:lop` | Báo cáo tổng hợp | US-008 |
-| POST | `/api/auth/tai-khoan` | Quản lý tài khoản | US-009 |
+| GET | `/api/diem?lop=&mon=&sv=` | Tra cứu điểm | US-008 |
+| POST | `/api/diem` | Nhập điểm | US-005 |
+| PUT | `/api/diem/:id` | Sửa điểm | US-006 |
+| GET | `/api/diem/:id/tong-ket` | Tính điểm tổng kết | US-007 |
+| GET | `/api/bang-diem/:lop/:mon` | Xuất bảng điểm (Excel/CSV) | US-009 |
+| GET | `/api/bao-cao/:lop` | Báo cáo tổng hợp | US-010 |
+| POST | `/api/auth/tai-khoan` | Quản trị tài khoản | US-011 |
 
 ## 2.6. Quy tắc điểm (constants/scoreRules.js)
 
@@ -196,4 +196,4 @@ export const SCORE_COLUMNS = [
 
 ## Kết luận chương 2
 
-Chương 2 trình bày mô hình dữ liệu chi tiết 5 bảng chính, dữ liệu seed 15 SV / 3 lớp / 3 môn / 2 user, service API nội bộ hiện tại và API contract dự kiến cho backend. Việc dùng localStorage làm mock DB cho phép phát triển song song frontend mà không phụ thuộc backend. Chương 3 sẽ trình bày thiết kế module frontend.
+Chương 2 trình bày mô hình dữ liệu chi tiết 5 bảng chính, dữ liệu seed 15 SV / 3 lớp / 3 môn / 2 user (GV + Người quản lý), service API nội bộ hiện tại và API contract dự kiến cho backend. Việc dùng localStorage làm mock DB cho phép phát triển song song frontend mà không phụ thuộc backend. Chương 3 sẽ trình bày thiết kế module frontend.

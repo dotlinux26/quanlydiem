@@ -2,7 +2,7 @@
 
 **Phát triển ứng dụng web hỗ trợ giáo viên nhập, quản lý, tra cứu và xuất báo cáo điểm thay thế quy trình thủ công**
 
-Ứng dụng giúp giáo viên xem lớp và danh sách sinh viên được phân công, nhập/sửa/tra cứu điểm, kiểm tra điểm hợp lệ và tính điểm tổng kết, đồng thời xuất bảng điểm và báo cáo tổng hợp. Quản trị viên quản lý lớp, sinh viên, môn học, tài khoản giáo viên và phân quyền.
+Ứng dụng giúp giáo viên xem lớp và danh sách sinh viên được phân công, nhập/sửa/tra cứu điểm, kiểm tra điểm hợp lệ và tính điểm tổng kết, đồng thời xuất bảng điểm và báo cáo tổng hợp. **Người quản lý** quản lý lớp, sinh viên, môn học, tài khoản giáo viên và phân quyền.
 
 **Phiên bản:** 0.1.0 (Sprint 1 — V0) | **Tác giả:** Nguyễn Đức Cảnh | **Giấy phép:** MIT
 
@@ -23,14 +23,14 @@
 
 ## Tính năng
 
-- **Quản lý lớp, sinh viên, môn học** — Thêm, sửa, xóa thông tin để duy trì dữ liệu học tập (quản trị viên)
+- **Quản lý lớp, sinh viên, môn học** — Thêm, sửa, xóa thông tin để duy trì dữ liệu học tập (**Người quản lý**)
 - **Nhập điểm** — Nhập điểm cho sinh viên trong lớp được phân công (giáo viên)
 - **Sửa điểm** — Cập nhật kết quả chính xác sau khi đã nhập
 - **Kiểm tra điểm hợp lệ** — Hệ thống kiểm tra giá trị điểm và tính điểm tổng kết, hạn chế sai sót
 - **Tra cứu điểm** — Tra cứu theo lớp, môn học và sinh viên
 - **Xuất bảng điểm** — Xuất bảng điểm phục vụ công tác giảng dạy và quản lý
 - **Báo cáo tổng hợp** — Báo cáo kết quả học tập, đánh giá tình hình của lớp
-- **Quản lý tài khoản & phân quyền** — Quản lý tài khoản giáo viên và phân quyền truy cập (quản trị viên)
+- **Quản lý tài khoản & phân quyền** — Quản lý tài khoản giáo viên và phân quyền truy cập (**Người quản lý**)
 
 ---
 
@@ -39,9 +39,9 @@
 | Actor | Vai trò | Quyền hạn |
 |-------|---------|-----------|
 | Giáo viên | Nhập, sửa, tra cứu điểm | Xem lớp và sinh viên được phân công; nhập/sửa/tra cứu điểm; xuất bảng điểm/báo cáo |
-| Quản trị viên | Quản lý dữ liệu và tài khoản | Quản lý lớp, sinh viên, môn học; quản lý tài khoản giáo viên; phân quyền |
+| **Người quản lý** | Quản lý dữ liệu và tài khoản | Quản lý lớp, sinh viên, môn học; quản lý tài khoản giáo viên; phân quyền |
 
-> Không có actor Sinh viên — hệ thống tập trung vào nghiệp vụ của giáo viên và quản trị viên.
+> Không có actor Sinh viên — hệ thống tập trung vào nghiệp vụ của giáo viên và người quản lý.
 
 ---
 
@@ -85,7 +85,7 @@ npm run lint
 
 ## Sử dụng
 
-App hiện ở giai đoạn khởi tạo Sprint 1 (V0). Màn hình chính hiển thị tổng quan đề tài và 2 actor chính: **Giáo viên** và **Quản trị viên**. Chi tiết đặc tả chức năng xem tại [`WHITEBOOK.md`](WHITEBOOK.md).
+App hiện ở giai đoạn Sprint 1 (V0). Màn hình chính hiển thị tổng quan đề tài và 2 actor chính: **Giáo viên** và **Người quản lý**. Chi tiết đặc tả chức năng xem tại [`WHITEBOOK.md`](WHITEBOOK.md).
 
 ---
 
