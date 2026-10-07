@@ -44,11 +44,11 @@ export function createSeed() {
   }
 
   const DIEM_MAC_DINH = [
-    { thuongKy: 8, giuaKy: 7.5, cuoiKy: 9 },
-    { thuongKy: 6, giuaKy: 6.5, cuoiKy: 7 },
-    { thuongKy: 9, giuaKy: 8, cuoiKy: 8.5 },
-    { thuongKy: 5, giuaKy: 5.5, cuoiKy: 6 },
-    { thuongKy: 7.5, giuaKy: 7, cuoiKy: 8 },
+    { tx: 8, gk: 7.5, ck: 9 },
+    { tx: 6, gk: 6.5, ck: 7 },
+    { tx: 9, gk: 8, ck: 8.5 },
+    { tx: 5, gk: 5.5, ck: 6 },
+    { tx: 7.5, gk: 7, ck: 8 },
   ]
 
   const diems = DIEM_MAC_DINH.map((d, i) => ({
@@ -76,6 +76,13 @@ export function createSeed() {
         password: '123456',
         role: 'QUAN_LY',
         name: 'Người quản lý',
+      },
+      {
+        id: 3,
+        username: 'gv02',
+        password: '123456',
+        role: 'GIAO_VIEN',
+        name: 'Trần Thị Lan',
       },
     ],
     lops,

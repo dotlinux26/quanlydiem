@@ -1,4 +1,4 @@
-import { loadDb } from '../db/store.js'
+import { loadDb, saveDb } from '../db/store.js'
 import { ROLES } from '../constants/roles.js'
 
 function delay(value, ms = 250) {
@@ -7,11 +7,11 @@ function delay(value, ms = 250) {
 
 export function listLops(user) {
   const db = loadDb()
-  let lops = db.lops
+  let lops = db.lops.map((l) => ({ ...l }))
   if (user?.role === ROLES.GIAO_VIEN) {
     lops = lops.filter((lop) => lop.giaoVienId === user.id)
   }
-  return delay([...lops])
+  return delay(lops)
 }
 
 export function getLop(id, user) {
@@ -22,6 +22,34 @@ export function getLop(id, user) {
     return delay(null)
   }
   return delay({ ...lop })
+}
+
+export function createLop(payload) {
+  const db = loadDb()
+  const id = Math.max(0, ...db.lops.map((l) => l.id)) + 1
+  const lop = { id, ...payload, giaoVienId: payload.giaoVienId ? Number(payload.giaoVienId) : null }
+  db.lops.push(lop)
+  saveDb(db)
+  return delay({ ...lop })
+}
+
+export function updateLop(id, payload) {
+  const db = loadDb()
+  const idx = db.lops.findIndex((l) => l.id === Number(id))
+  if (idx < 0) return delay(null)
+  db.lops[idx] = { ...db.lops[idx], ...payload, giaoVienId: payload.giaoVienId ? Number(payload.giaoVienId) : null }
+  saveDb(db)
+  return delay({ ...db.lops[idx] })
+}
+
+export function deleteLop(id) {
+  const db = loadDb()
+  const hasStudents = db.sinhViens.some((sv) => sv.lopId === Number(id))
+  if (hasStudents) return delay({ error: 'Lớp đã có sinh viên, không thể xóa' })
+  const idx = db.lops.findIndex((l) => l.id === Number(id))
+  if (idx >= 0) db.lops.splice(idx, 1)
+  saveDb(db)
+  return delay(true)
 }
 
 export function listSinhViens(lopId) {
@@ -36,4 +64,8 @@ export function listSinhViens(lopId) {
 export function listMonHocs() {
   const db = loadDb()
   return delay(db.monHocs.map((m) => ({ ...m })))
+}
+
+export function assignGiaoVien(lopId, giaoVienId) {
+  return updateLop(lopId, { giaoVienId: giaoVienId ? Number(giaoVienId) : null })
 }

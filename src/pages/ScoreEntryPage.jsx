@@ -4,17 +4,18 @@ import { useAuth } from '../hooks/useAuth.js'
 import * as lopService from '../services/lopService.js'
 import * as diemService from '../services/diemService.js'
 import { parseScore, scoreInputError, calcSummary } from '../utils/score.js'
-import { formatScore } from '../utils/format.js'
+import { formatScore, formatDate } from '../utils/format.js'
 import * as XLSX from 'xlsx'
+import { getLetterGrade } from '../constants/gradeScale.js'
 
 function toValues(record) {
   return record
     ? {
-        thuongKy: formatScore(record.thuongKy),
-        giuaKy: formatScore(record.giuaKy),
-        cuoiKy: formatScore(record.cuoiKy),
+        tx: formatScore(record.tx),
+        gk: formatScore(record.gk),
+        ck: formatScore(record.ck),
       }
-    : { thuongKy: '', giuaKy: '', cuoiKy: '' }
+    : { tx: '', gk: '', ck: '' }
 }
 
 function exportToFile(data, fileName, fileType) {
@@ -138,13 +139,13 @@ export default function ScoreEntryPage() {
     for (const sv of sinhViens) {
       const row = rows[sv.id]
       if (!row) continue
-      const thuongKy = parseScore(row.values.thuongKy)
-      const giuaKy = parseScore(row.values.giuaKy)
-      const cuoiKy = parseScore(row.values.cuoiKy)
-      if (thuongKy === null || giuaKy === null || cuoiKy === null) {
+      const tx = parseScore(row.values.tx)
+      const gk = parseScore(row.values.gk)
+      const ck = parseScore(row.values.ck)
+      if (tx === null || gk === null || ck === null) {
         summary[sv.id] = null
       } else {
-        summary[sv.id] = calcSummary({ thuongKy, giuaKy, cuoiKy })
+        summary[sv.id] = calcSummary({ tx, gk, ck })
       }
     }
     return summary
@@ -153,7 +154,7 @@ export default function ScoreEntryPage() {
   async function saveRow(sv) {
     const row = rows[sv.id]
     const errors = {}
-    for (const field of ['thuongKy', 'giuaKy', 'cuoiKy']) {
+    for (const field of ['tx', 'gk', 'ck']) {
       const err = scoreInputError(row.values[field])
       if (err) errors[field] = err
     }
@@ -169,9 +170,9 @@ export default function ScoreEntryPage() {
         sinhVienId: sv.id,
         lopId: lop.id,
         monHocId: monId,
-        thuongKy: parseScore(row.values.thuongKy),
-        giuaKy: parseScore(row.values.giuaKy),
-        cuoiKy: parseScore(row.values.cuoiKy),
+        tx: parseScore(row.values.tx),
+        gk: parseScore(row.values.gk),
+        ck: parseScore(row.values.ck),
       })
       setRows((prev) => ({
         ...prev,
@@ -199,10 +200,11 @@ export default function ScoreEntryPage() {
         STT: idx + 1,
         'Mã SV': sv.ma,
         'Họ tên': sv.hoTen,
-        'Thường kỳ': row?.values?.thuongKy ?? '',
-        'Giữa kỳ': row?.values?.giuaKy ?? '',
-        'Cuối kỳ': row?.values?.cuoiKy ?? '',
+        'TX': row?.values?.tx ?? '',
+        'GK': row?.values?.gk ?? '',
+        'CK': row?.values?.ck ?? '',
         'Tổng kết': tk === null || tk === undefined ? '' : formatScore(tk),
+        'Điểm chữ': tk === null || tk === undefined ? '' : getLetterGrade(tk),
         'Trạng thái': row?.status === 'saved' ? 'Đã lưu' : row?.status === 'dirty' ? 'Chưa lưu' : 'Mới',
       }
     })
@@ -222,7 +224,7 @@ export default function ScoreEntryPage() {
         <div>
           <Link to={`/lop/${lop.id}`} className="btn btn-ghost btn-sm link-back">← Danh sách sinh viên</Link>
           <h2 style={{ marginTop: '0.75rem' }}>Nhập điểm — {lop.ten}</h2>
-          <p className="muted">Môn: {monHoc?.ten} ({monHoc?.ma}) · Thang điểm 0–10, bước 0,5</p>
+          <p className="muted">Môn: {monHoc?.ten} ({monHoc?.ma}) · Thang điểm 0–10, bước 0,5 (TX 30%, GK 30%, CK 40%)</p>
         </div>
         <div className="page-actions">
           <button className="btn btn-outline" onClick={() => handleExport('xlsx')}>Xuất Excel</button>
@@ -266,10 +268,11 @@ export default function ScoreEntryPage() {
                 <th style={{ width: '60px' }}>STT</th>
                 <th style={{ width: '110px' }}>Mã SV</th>
                 <th>Họ tên</th>
-                <th className="th-score" style={{ width: '100px' }}>Thường kỳ</th>
-                <th className="th-score" style={{ width: '100px' }}>Giữa kỳ</th>
-                <th className="th-score" style={{ width: '100px' }}>Cuối kỳ</th>
+                <th className="th-score" style={{ width: '90px' }}>TX</th>
+                <th className="th-score" style={{ width: '90px' }}>GK</th>
+                <th className="th-score" style={{ width: '90px' }}>CK</th>
                 <th className="th-score" style={{ width: '100px' }}>Tổng kết</th>
+                <th className="th-score" style={{ width: '90px' }}>Điểm chữ</th>
                 <th style={{ width: '120px' }}>Trạng thái</th>
                 <th style={{ width: '100px' }}>Thao tác</th>
               </tr>
@@ -281,8 +284,8 @@ export default function ScoreEntryPage() {
                 const tongKet = computed[sv.id] ?? row.record?.tongKet
                 const isSaving = savingId === sv.id
                 const isHighlight = highlightSvId !== null && sv.id === highlightSvId
-                const fields = ['thuongKy', 'giuaKy', 'cuoiKy']
-                const labels = ['Thường kỳ', 'Giữa kỳ', 'Cuối kỳ']
+                const fields = ['tx', 'gk', 'ck']
+                const labels = ['TX', 'GK', 'CK']
                 return (
                   <tr
                     key={sv.id}
@@ -294,7 +297,7 @@ export default function ScoreEntryPage() {
                     <td>{sv.hoTen}</td>
                     {fields.map((f, idx) => (
                       <td key={f} className="score-cell" style={{ padding: '0.25rem 0.5rem' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.1rem', minWidth: '90px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.1rem', minWidth: '80px' }}>
                           <label className="form-label" style={{ fontSize: '0.55rem', textTransform: 'uppercase', letterSpacing: '0.02em', color: '#94a3b8', margin: 0, lineHeight: 1, whiteSpace: 'nowrap' }}>
                             {labels[idx]}
                           </label>
@@ -305,14 +308,17 @@ export default function ScoreEntryPage() {
                             placeholder="0–10"
                             value={row.values?.[f] ?? ''}
                             onChange={(e) => handleChange(sv.id, f, e.target.value)}
-                            style={{ width: '90px', height: '32px', padding: '0 0.35rem', fontSize: '0.8125rem', textAlign: 'center', borderRadius: '6px', boxSizing: 'border-box', borderColor: row.errors?.[f] ? '#dc2626' : '#cbd5e1' }}
+                            style={{ width: '80px', height: '32px', padding: '0 0.35rem', fontSize: '0.8125rem', textAlign: 'center', borderRadius: '6px', boxSizing: 'border-box', borderColor: row.errors?.[f] ? '#dc2626' : '#cbd5e1' }}
                           />
                           {row.errors?.[f] && <span className="form-error" style={{ fontSize: '0.6rem', color: '#dc2626', lineHeight: 1, whiteSpace: 'nowrap', marginTop: '0.05rem' }}>{row.errors[f]}</span>}
                         </div>
                       </td>
                     ))}
-                    <td className="tong-ket">
+                    <td className="tong-ket" style={{ fontWeight: 600, fontSize: '0.9375rem' }}>
                       {tongKet === null || tongKet === undefined ? '—' : formatScore(tongKet)}
+                    </td>
+                    <td className="tong-ket" style={{ fontWeight: 500, textAlign: 'center' }}>
+                      {tongKet === null || tongKet === undefined ? '—' : getLetterGrade(tongKet)}
                     </td>
                     <td>
                       <span className={`badge ${row.status === 'saved' ? 'badge-success' : row.status === 'dirty' ? 'badge-warning' : 'badge-neutral'}`}>

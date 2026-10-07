@@ -1,18 +1,15 @@
 import { useState } from 'react'
-import { useNavigate, useLocation, Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
 import Icon from '../components/Icon.jsx'
 
 export default function LoginPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
-  const location = useLocation()
   const [username, setUsername] = useState('gv01')
   const [password, setPassword] = useState('123456')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
-
-  const from = location.state?.from?.pathname || '/'
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -29,8 +26,8 @@ export default function LoginPage() {
         setError('Sai tên đăng nhập hoặc mật khẩu.')
         return
       }
-      // Redirect based on role
-      const target = session.role === 'QUAN_LY' ? '/admin' : (from || '/lop')
+      // Redirect based on role: GV luôn về danh sách lớp, QL về admin dashboard
+      const target = session.role === 'QUAN_LY' ? '/admin' : '/lop'
       navigate(target, { replace: true })
     } finally {
       setSubmitting(false)
