@@ -7,5 +7,9 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5174,
+    allowedHosts: ['quanlydiem.onrender.com', '.onrender.com']
   },
+  preview: {
+    allowedHosts: ['quanlydiem.onrender.com', '.onrender.com']
+  }
 })
