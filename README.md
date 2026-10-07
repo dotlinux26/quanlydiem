@@ -1,6 +1,6 @@
 # Phát triển dự án website quản lý nhập liệu điểm và xuất báo cáo cho giáo viên
 
-**Phát triển ứng dụng web hỗ trợ giáo viên nhập, quản lý, tra cứu và xuất báo cáo điểm thay thế quy trình thủ công**
+**Phát triển ứng dụng web hỗ trợ giáo viên nhập, quản lý, tra cứu và xuất báo cáo điểm / thay thế quy trình thủ công**
 
 Ứng dụng giúp giáo viên xem lớp và danh sách sinh viên được phân công, nhập/sửa/tra cứu điểm, kiểm tra điểm hợp lệ và tính điểm tổng kết, đồng thời xuất bảng điểm và báo cáo tổng hợp. **Người quản lý** quản lý lớp, sinh viên, môn học, tài khoản giáo viên và phân quyền.
 
