@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth.js'
 import * as taiKhoanService from '../services/taiKhoanService.js'
 import Icon from '../components/Icon.jsx'
 import Modal from '../components/Modal.jsx'
+import Select from '../components/Select.jsx'
 
 export default function AdminAccountsPage() {
   const { user } = useAuth()
@@ -113,10 +114,15 @@ export default function AdminAccountsPage() {
                   <td><code>{tk.username}</code></td>
                   <td>{tk.name}</td>
                   <td>
-                    <select className="form-select form-select-sm" value={tk.role} onChange={e => handleRoleChange(tk.id, e.target.value)} style={{ width: 'auto', display: 'inline-block' }}>
-                      <option value="GIAO_VIEN">Giáo viên</option>
-                      <option value="QUAN_LY">Người quản lý</option>
-                    </select>
+                    <Select
+                      value={tk.role}
+                      onChange={(val) => handleRoleChange(tk.id, val)}
+                      options={[
+                        { value: 'GIAO_VIEN', label: 'Giáo viên' },
+                        { value: 'QUAN_LY', label: 'Người quản lý' },
+                      ]}
+                      style={{ minWidth: '140px' }}
+                    />
                   </td>
                   <td>
                     <span className={`badge ${getRoleBadgeClass(tk.active ? 'active' : 'inactive')}`}>
@@ -166,17 +172,25 @@ export default function AdminAccountsPage() {
             </div>
             <div>
               <label className="form-label">Vai trò</label>
-              <select className="form-select" value={form.role} onChange={e => setForm({...form, role: e.target.value})}>
-                <option value="GIAO_VIEN">Giáo viên</option>
-                <option value="QUAN_LY">Người quản lý</option>
-              </select>
+              <Select
+                value={form.role}
+                onChange={(val) => setForm({...form, role: val})}
+                options={[
+                  { value: 'GIAO_VIEN', label: 'Giáo viên' },
+                  { value: 'QUAN_LY', label: 'Người quản lý' },
+                ]}
+              />
             </div>
             <div>
               <label className="form-label">Trạng thái</label>
-              <select className="form-select" value={form.active ? 'true' : 'false'} onChange={e => setForm({...form, active: e.target.value === 'true'})}>
-                <option value="true">Hoạt động</option>
-                <option value="false">Khóa</option>
-              </select>
+              <Select
+                value={form.active ? 'true' : 'false'}
+                onChange={(val) => setForm({...form, active: val === 'true'})}
+                options={[
+                  { value: 'true', label: 'Hoạt động' },
+                  { value: 'false', label: 'Khóa' },
+                ]}
+              />
             </div>
           </form>
         </Modal>

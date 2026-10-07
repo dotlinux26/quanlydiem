@@ -59,7 +59,7 @@ export default function AdminDashboardPage() {
         {statCards.map((s, i) => (
           <Link key={i} to={s.href} className="card" style={{ textDecoration: 'none', color: 'inherit', display: 'block', transition: 'transform 0.15s, box-shadow 0.15s' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '10px', background: `${s.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Icon name={s.icon} size={24} style={{ color: s.color }} />
               </div>
               <div>
@@ -80,7 +80,7 @@ export default function AdminDashboardPage() {
             {features.map((f, i) => (
               <Link key={i} to={f.href} className="feature-card" style={{ textDecoration: 'none', color: 'inherit', display: 'block', transition: 'border-color 0.15s, box-shadow 0.15s' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#dbeafe', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Icon name={f.icon} size={20} style={{ color: '#2563eb' }} />
                   </div>
                   <div style={{ flex: 1 }}>
