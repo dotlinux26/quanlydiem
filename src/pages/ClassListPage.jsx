@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
 import * as lopService from '../services/lopService.js'
+import Icon from '../components/Icon.jsx'
 
 export default function ClassListPage() {
   const { user } = useAuth()
@@ -40,7 +41,7 @@ export default function ClassListPage() {
       {lops.length === 0 ? (
         <div className="card">
           <div className="empty-state">
-            <div className="icon" aria-hidden="true">📚</div>
+            <div className="icon" aria-hidden="true"><Icon name="bookOpen" size={48} /></div>
             <h3>Chưa có lớp nào</h3>
             <p>Bạn chưa được phân công lớp học nào. Vui lòng liên hệ người quản lý.</p>
           </div>

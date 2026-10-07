@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
+import Icon from '../components/Icon.jsx'
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -40,7 +41,9 @@ export default function LoginPage() {
     <div className="login-page">
       <div className="login-card">
         <div className="login-header">
-          <div className="logo" aria-hidden="true">📊</div>
+          <div className="logo" aria-hidden="true">
+            <Icon name="barChart" size={48} />
+          </div>
           <h1>Quản Lý Điểm</h1>
           <p>Hệ thống nhập liệu và báo cáo điểm cho giáo viên</p>
         </div>

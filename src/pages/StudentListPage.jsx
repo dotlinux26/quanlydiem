@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.js'
 import * as lopService from '../services/lopService.js'
+import Icon from '../components/Icon.jsx'
 
 export default function StudentListPage() {
   const { id } = useParams()
@@ -53,7 +54,7 @@ export default function StudentListPage() {
       {sinhViens.length === 0 ? (
         <div className="card">
           <div className="empty-state">
-            <div className="icon" aria-hidden="true">👥</div>
+            <div className="icon" aria-hidden="true"><Icon name="users" size={48} /></div>
             <h3>Chưa có sinh viên</h3>
             <p>Lớp này chưa có sinh viên nào.</p>
           </div>
