@@ -71,6 +71,7 @@ const iconMap = {
   refreshCcw: Lucide.RefreshCcw,
   moreHorizontal: Lucide.MoreHorizontal,
   moreVertical: Lucide.MoreVertical,
+  arrowRightLeft: Lucide.ArrowRightLeft,
 }
 
 export default function Icon({ name, size = 20, className = '', ...props }) {

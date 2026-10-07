@@ -1,4 +1,5 @@
 import { loadDb, saveDb } from '../db/store.js'
+import bcrypt from 'bcryptjs'
 
 const USER_KEY = 'quanlydiem_current_user'
 
@@ -14,14 +15,16 @@ export function getCurrentUser() {
   }
 }
 
-export function login(username, password) {
+export async function login(username, password) {
   const db = loadDb()
   const user = db.users.find(
-    (u) =>
-      u.username === String(username ?? '').trim() &&
-      u.password === String(password ?? ''),
+    (u) => u.username === String(username ?? '').trim()
   )
   if (!user) {
+    return delay(null)
+  }
+  const valid = await bcrypt.compare(password, user.password)
+  if (!valid) {
     return delay(null)
   }
   const session = { id: user.id, username: user.username, role: user.role, name: user.name }
@@ -33,10 +36,15 @@ export function logout() {
   localStorage.removeItem(USER_KEY)
 }
 
-export function createAccount(account) {
+export async function createAccount(account) {
   const db = loadDb()
+  if (db.users.some((u) => u.username === account.username)) {
+    return delay({ error: 'Tên đăng nhập đã tồn tại' })
+  }
   const id = Math.max(0, ...db.users.map((u) => u.id)) + 1
-  db.users.push({ id, ...account })
+  const hashedPassword = await bcrypt.hash(account.password, 10)
+  const user = { id, ...account, password: hashedPassword }
+  db.users.push(user)
   saveDb(db)
-  return delay({ id, ...account })
+  return delay({ id, username: user.username, role: user.role, name: user.name })
 }

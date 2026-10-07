@@ -1,5 +1,6 @@
 import { loadDb, saveDb } from '../db/store.js'
 import { calcSummary, isValidScore } from '../utils/score.js'
+import { getLetterGrade } from '../constants/gradeScale.js'
 
 function delay(value, ms = 250) {
   return new Promise((resolve) => setTimeout(() => resolve(value), ms))
@@ -14,7 +15,14 @@ export function listDiems({ lopId, monHocId }) {
   return delay(
     db.diems
       .filter((d) => d.lopId === Number(lopId) && d.monHocId === Number(monHocId))
-      .map((d) => ({ ...d })),
+      .map((d) => {
+        const tongKet = calcSummary({ tx: d.tx, gk: d.gk, ck: d.ck })
+        return {
+          ...d,
+          tongKet: tongKet !== null ? tongKet : null,
+          diemChu: tongKet !== null ? getLetterGrade(tongKet) : '—'
+        }
+      }),
   )
 }
 

@@ -213,7 +213,7 @@ export default function ReportPage() {
           </div>
         )}
 
-        {chartData && (
+        {chartData && chartData.bar && chartData.doughnut && (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
             <div className="card">
               <div className="card-header"><h3>Phân bố điểm chữ</h3></div>
@@ -243,13 +243,13 @@ export default function ReportPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.entries(stats.gradeDist).map(([grade, count]) => (
-                    <tr key={grade}>
-                      <td><span className="badge badge-info">{grade}</span></td>
-                      <td>{count}</td>
-                      <td>{((count / stats.total) * 100).toFixed(1)}%</td>
-                    </tr>
-                  ))}
+{Object.entries(stats.gradeDist).map(([grade, count]) => (
+                      <tr key={grade}>
+                        <td><span className="badge badge-info">{grade}</span></td>
+                        <td>{count}</td>
+                        <td>{stats.total > 0 ? ((count / stats.total) * 100).toFixed(1) : '0.0'}%</td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

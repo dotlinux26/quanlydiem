@@ -16,6 +16,42 @@ const HO_TEN = [
   'Hồ Gia Bảo',
 ]
 
+const DIA_CHI = [
+  'Hà Nội',
+  'Hải Phòng',
+  'Đà Nẵng',
+  'TP.HCM',
+  'Cần Thơ',
+  'Bình Dương',
+  'Đồng Nai',
+  'Long An',
+  'Tiền Giang',
+  'Vũng Tàu',
+  'Bình Thuận',
+  'Nghệ An',
+  'Hà Tĩnh',
+  'Quảng Bình',
+  'Quảng Trị',
+]
+
+const QUE_QUAN = [
+  'Hà Nội',
+  'Hải Phòng',
+  'Đà Nẵng',
+  'TP.HCM',
+  'Cần Thơ',
+  'Bình Dương',
+  'Đồng Nai',
+  'Long An',
+  'Tiền Giang',
+  'Vũng Tàu',
+  'Bình Thuận',
+  'Nghệ An',
+  'Hà Tĩnh',
+  'Quảng Bình',
+  'Quảng Trị',
+]
+
 export function createSeed() {
   const lops = [
     { id: 1, ten: 'CNTT - K18A', namHoc: '2026-2027', giaoVienId: 1 },
@@ -34,11 +70,29 @@ export function createSeed() {
   for (const lop of lops) {
     for (let i = 0; i < 5; i++) {
       svId += 1
+      const hocSinh = HO_TEN[svId - 1]
+      const queQuan = QUE_QUAN[Math.floor(Math.random() * QUE_QUAN.length)]
+      const diaChi = DIA_CHI[Math.floor(Math.random() * DIA_CHI.length)]
+      const ngaySinh = `${2004 + Math.floor(Math.random() * 2)}-${String(Math.floor(Math.random() * 12) + 1).padStart(2, '0')}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`
+      const gioiTinh = Math.random() > 0.5 ? 'Nam' : 'Nữ'
+      
       sinhViens.push({
         id: svId,
         ma: `SV${String(svId).padStart(4, '0')}`,
-        hoTen: HO_TEN[svId - 1],
+        hoTen: hocSinh,
         lopId: lop.id,
+        email: `${hocSinh.toLowerCase().replace(/\s+/g, '.').normalize('NFD').replace(/[\u0300-\u036f]/g, '')}@student.edu.vn`.toLowerCase(),
+        soDienThoai: `09${String(Math.floor(Math.random() * 90000000) + 10000000).padStart(8, '0')}`,
+        ngaySinh: `${2004 + Math.floor(Math.random() * 2)}-${String(Math.floor(Math.random() * 12) + 1).padStart(2, '0')}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
+        gioiTinh: Math.random() > 0.5 ? 'Nam' : 'Nữ',
+        diaChi: `${Math.floor(Math.random() * 100) + 1} ${['Nguyễn Trãi', 'Lê Lợi', 'Trần Hưng Đạo', 'Lý Thường Kiệt', 'Hai Bà Trưng', 'Trần Phú', 'Cách Mạng', 'Điện Biên Phủ'][Math.floor(Math.random() * 8)]}, ${diaChi}, ${queQuan}`,
+        queQuan: queQuan,
+        soDienThoai: `09${String(Math.floor(Math.random() * 90000000) + 10000000).padStart(8, '0')}`,
+        ngaySinh: ngaySinh,
+        gioiTinh: Math.random() > 0.5 ? 'Nam' : 'Nữ',
+        ghiChu: '',
+        createdAt: '2026-09-24T10:00:00+07:00',
+        updatedAt: '2026-09-24T10:00:00+07:00',
       })
     }
   }
@@ -66,21 +120,21 @@ export function createSeed() {
       {
         id: 1,
         username: 'gv01',
-        password: '123456',
+        password: '$2b$10$egXMT.HwNsgVeulESWpNIeegeMy8HUPZEKZYc0KDMqmhZmmjNeHEG',
         role: 'GIAO_VIEN',
         name: 'Nguyễn Văn Giáo',
       },
       {
         id: 2,
         username: 'quanly01',
-        password: '123456',
+        password: '$2b$10$egXMT.HwNsgVeulESWpNIeegeMy8HUPZEKZYc0KDMqmhZmmjNeHEG',
         role: 'QUAN_LY',
         name: 'Người quản lý',
       },
       {
         id: 3,
         username: 'gv02',
-        password: '123456',
+        password: '$2b$10$egXMT.HwNsgVeulESWpNIeegeMy8HUPZEKZYc0KDMqmhZmmjNeHEG',
         role: 'GIAO_VIEN',
         name: 'Trần Thị Lan',
       },

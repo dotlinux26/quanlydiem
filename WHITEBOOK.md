@@ -1,6 +1,6 @@
 # WHITEBOOK – Phát Triển Website Quản Lý Nhập Liệu Điểm Và Xuất Báo Cáo Cho Giáo Viên
 
-> Phiên bản: 2.0 | Cập nhật: 2026-09-25 | Trạng thái: Baseline Sprint 1
+> Phiên bản: 2.1 | Cập nhật: 2026-10-07 | Trạng thái: Sprint 1 Done, Sprint 2–3 Planned
 
 ---
 
@@ -12,7 +12,7 @@
 **Giảng viên hướng dẫn:** [Tên giảng viên]  
 **Học kỳ / Năm học:** HK1 – 2026-2027  
 **Repository:** `git@github.com:dotlinux26/quanlydiem.git`  
-**Công nghệ chính:** React 19, Vite 8, Node.js 24, SQLite (better-sqlite3), React Router 7, SheetJS, Playwright  
+**Công nghệ chính:** React 19, Vite 8, Node.js 24, SQLite (better-sqlite3), React Router 7, SheetJS, Playwright, bcryptjs  
 
 ---
 
@@ -34,6 +34,7 @@
 - Giáo viên: Xem danh sách lớp/sinh viên được phân công; nhập, sửa điểm; hệ thống tự kiểm tra và tính điểm tổng kết
 - Tra cứu điểm theo nhiều tiêu chí; xuất bảng điểm Excel/CSV; xem báo cáo tổng hợp có biểu đồ
 - Phân quyền dựa trên vai trò (Giáo viên / Người quản lý)
+- Mật khẩu hash bcrypt cost 10; import sinh viên tự match lớp theo tên/mã
 
 **Ngoài phạm vi:**
 - Ứng dụng di động / PWA
@@ -89,9 +90,8 @@ useCaseDiagram
 
 #### Epic 2: Quản Lý Sinh Viên
 **US-003** – Là **Người quản lý**, tôi muốn **tạo, sửa, xóa sinh viên, nhập danh sách từ Excel, chuyển lớp** để quản lý danh sách học sinh.  
-- AC1: Thêm từng sinh viên (mã, họ tên, chọn lớp) → lưu thành công  
-- AC2: Tải file Excel mẫu, nhập danh sách → import 5 sinh viên/lớp một lần  
-- AC3: Chuyển sinh viên sang lớp khác → cập nhật `lop_id` ngay  
+- AC1: Thêm từng sinh viên (mã, họ tên, chọn lớp, email, SĐT, ngày sinh, giới tính, địa chỉ, ghi chú) → lưu thành công  
+- AC2: Tải file Excel mẫu, nhập danh sách → import 5 sinh viên/lớp một lần, tự match lớp theo tên/mã  
 - AC4: Xóa sinh viên → xác nhận, xóa luôn điểm liên quan  
 
 #### Epic 3: Quản Lý Môn Học
@@ -105,7 +105,7 @@ useCaseDiagram
 ### Theme 2: Quản Lý Điểm
 #### Epic 4: Nhập & Kiểm Tra Điểm
 **US-005** – Là **Giáo viên**, tôi muốn **nhập điểm cho sinh viên theo lớp và môn học** để lưu kết quả học tập.  
-- AC1: Chọn lớp, chọn môn → hiện bảng 5 sinh viên với 3 cột nhập (Thường kỳ, Giữa kỳ, Cuối kỳ)  
+- AC1: Chọn lớp, chọn môn → hiện bảng 5 sinh viên với 3 cột nhập (Thường xuyên, Giữa kỳ, Cuối kỳ)  
 - AC2: Nhập điểm dạng Việt Nam (ví dụ 7,5) → hệ thống hiểu là 7.5  
 - AC3: Nhấn "Lưu" → upsert điểm, tính tự động Tổng kết, hiển thị trạng thái "Đã lưu"  
 
@@ -126,15 +126,15 @@ useCaseDiagram
 **US-008** – Là **Giáo viên**, tôi muốn **tra cứu điểm theo lớp, môn học, sinh viên có phân trang** để theo dõi kết quả.  
 - AC1: Bộ lọc: chọn lớp, chọn môn, nhập tên/mã sinh viên → lọc đúng  
 - AC2: Kết quả hiển thị bảng có phân trang (20 dòng/trang)  
-- AC3: Hiển thị đủ: STT, Mã SV, Họ tên, TK, GK, CK, Tổng kết, Trạng thái  
+- AC3: Hiển thị đủ: STT, Mã SV, Họ tên, TX, GK, CK, Tổng kết, Điểm chữ  
 
 **US-009** – Là **Giáo viên**, tôi muốn **xuất bảng điểm ra file Excel (.xlsx) và CSV** để dùng trong công tác giảng dạy.  
 - AC1: Nhấn "Xuất Excel" → tải file `.xlsx` đúng định dạng  
 - AC2: Nhấn "Xuất CSV" → tải file `.csv` mở được bằng Excel  
-- AC3: File chứa 8 cột: STT, Mã SV, Họ tên, TK, GK, CK, Tổng kết, Trạng thái  
+- AC3: File chứa 9 cột: STT, Mã SV, Họ tên, TX, GK, CK, Tổng kết, Điểm chữ, Trạng thái  
 
 **US-010** – Là **Giáo viên**, tôi muốn **xem báo cáo tổng hợp (điểm cao/thấp/trung bình, tỷ lệ đạt, biểu đồ)** để đánh giá tình hình lớp.  
-- AC1: Chọn lớp, môn → hiển thị: điểm cao nhất, thấp nhất, trung bình, % đạt (≥5)  
+- AC1: Chọn lớp, môn → hiển thị: điểm cao nhất, thấp nhất, trung bình, % đạt (≥4.0)  
 - AC2: Biểu đồ cột phân bố điểm, biểu đồ tròn tỷ lệ đạt/không đạt (Chart.js)  
 - AC3: Xuất báo cáo PDF (tùy chọn)  
 
@@ -152,13 +152,15 @@ useCaseDiagram
 | Mã | Quy tắc | Mô tả |
 |----|---------|-------|
 | BR-01 | Thang điểm | Mỗi cột điểm ∈ [0, 10], bước 0.5. Hỗ trợ nhập dấu phẩy (7,5 → 7.5) |
-| BR-02 | Công thức tổng kết | `Tổng kết = ROUND(0.3×Thường_kỳ + 0.3×Giữa_kỳ + 0.4×Cuối_kỳ, 1)` |
+| BR-02 | Công thức tổng kết | `Tổng kết = ROUND(0.3×Thường_xuyên + 0.3×Giữa_kỳ + 0.4×Cuối_kỳ, 1)` |
 | BR-03 | Độc nhất điểm | Một cặp (Sinh viên, Môn học, Lớp) chỉ có **một** bản ghi điểm (UNIQUE) |
 | BR-04 | Phân quyền dữ liệu | Giáo viên chỉ thấy/làm việc với lớp có `giao_vien_id = id_của_mình` |
 | BR-05 | Người quản lý toàn quyền | Người quản lý xem/sửa/xóa toàn bộ dữ liệu, không bị lọc |
-| BR-06 | Mật khẩu | Lưu hash bcrypt (cost 10) từ Sprint 3; demo dùng plaintext |
+| BR-06 | Mật khẩu | Lưu hash bcrypt (cost 10); so sánh bằng `bcrypt.compare` |
 | BR-07 | Xóa dữ liệu cha | Xóa lớp/sinh viên/môn → cascade xóa điểm liên quan (hoặc soft-delete) |
 | BR-08 | Mã định danh | Mã SV: `SV####` (4 chữ số), Mã môn: `XXX###` (3 chữ + 3 số) |
+| BR-09 | Sinh viên mở rộng | Email, SĐT, ngày sinh, giới tính, địa chỉ, ghi chú, createdAt, updatedAt |
+| BR-10 | Import sinh viên | Tự match lớp theo tên/mã lớp từ file Excel (cột: lop/ten lop/ma lop) |
 
 ---
 
@@ -178,10 +180,10 @@ erDiagram
 | Thực thể | Thuộc tính (PK/FK) | Kiểu | Ràng buộc / Mô tả |
 |----------|-------------------|------|-------------------|
 | **LOP** | id (PK), ten, nam_hoc, giao_vien_id (FK→TAI_KHOAN) | INT, TEXT, TEXT, INT | ten UNIQUE trong cùng năm_hoc |
-| **SINH_VIEN** | id (PK), ma (UK), ho_ten, lop_id (FK→LOP) | INT, TEXT, TEXT, INT | ma format `SV####` |
+| **SINH_VIEN** | id (PK), ma (UK), ho_ten, lop_id (FK→LOP), email, so_dien_thoai, ngay_sinh, gioi_tinh, dia_chi, ghi_chu, created_at, updated_at | INT, TEXT, TEXT, INT, TEXT, TEXT, TEXT, TEXT, TEXT, TEXT, TEXT, TEXT | ma format `SV####`; unique ma; timestamps |
 | **MON_HOC** | id (PK), ma (UK), ten, so_tin_chi | INT, TEXT, TEXT, INT | ma format `XXX###` |
-| **DIEM** | id (PK), sinh_vien_id (FK), mon_hoc_id (FK), lop_id (FK), thuong_ky, giua_ky, cuoi_ky, tong_ket, created_at, updated_at | INT, INT, INT, INT, REAL, REAL, REAL, REAL, TEXT, TEXT | UK(sinh_vien_id, mon_hoc_id, lop_id); tong_ket tính theo BR-02 |
-| **TAI_KHOAN** | id (PK), username (UK), password_hash, role, name, giao_vien_id (FK NULL) | INT, TEXT, TEXT, TEXT, TEXT, INT | role ∈ {GIAO_VIEN, QUAN_TRI_VIEN} |
+| **DIEM** | id (PK), sinh_vien_id (FK), mon_hoc_id (FK), lop_id (FK), thuong_xuyen, giua_ky, cuoi_ky, tong_ket, created_at, updated_at | INT, INT, INT, INT, REAL, REAL, REAL, REAL, TEXT, TEXT | UK(sinh_vien_id, mon_hoc_id, lop_id); tong_ket tính theo BR-02 |
+| **TAI_KHOAN** | id (PK), username (UK), password_hash, role, name, giao_vien_id (FK NULL) | INT, TEXT, TEXT, TEXT, TEXT, INT | role ∈ {GIAO_VIEN, QUAN_LY}; password hash bcrypt cost 10 |
 
 ---
 
@@ -192,7 +194,7 @@ erDiagram
 | NFR-01 | Tải trang < 2 giây (môi trường local) | Bắt buộc | Lighthouse |
 | NFR-02 | Hỗ trợ Chrome, Edge, Firefox bản mới nhất | Bắt buộc | Thử thủ công |
 | NFR-03 | Responsive ≤ 768px (bảng cuộn ngang, form xếp dọc) | Nên có | DevTools device toolbar |
-| NFR-04 | Mật khẩu hash bcrypt cost 10 (từ Sprint 3) | Bắt buộc | Code review |
+| NFR-04 | Mật khẩu hash bcrypt cost 10 | Bắt buộc | Code review |
 | NFR-05 | File SQLite < 5 MB (dữ liệu seed) | Bắt buộc | `ls -lh` |
 | NFR-06 | Không lỗi console khi chạy E2E | Bắt buộc | Playwright |
 | NFR-07 | Lint 0 lỗi (Oxlint) | Bắt buộc | `npm run lint` |
@@ -206,7 +208,8 @@ erDiagram
 ```
 / (Trang chủ) → /login →
   Giáo viên: /lop → /lop/:id → /lop/:id/diem
-  Người quản lý: /admin → /admin/classes|/students|/subjects|/teachers
+  Người quản lý: /admin → /admin/classes|/students|/subjects|/accounts
+  Chung: /lookup, /report
 ```
 
 ### 8.2. Các màn hình chính
@@ -214,12 +217,17 @@ erDiagram
 | Màn hình | Đường dẫn | Vai trò | Thành phần chính |
 |----------|-----------|---------|------------------|
 | Trang chủ | `/` | Tất cả | Tiêu đề, mô tả 1 dòng, nút "Bắt đầu ngay" |
-| Đăng nhập | `/login` | Tất cả | Form, gợi ý tài khoản demo |
+| Đăng nhập | `/login` | Tất cả | Form, gợi ý tài khoản demo, FAB quản trị cho QL |
 | Danh sách lớp | `/lop` | Giáo viên | Card/bảng 3 lớp, nút "Xem sinh viên" |
 | Danh sách SV | `/lop/:id` | Giáo viên | Bảng 5 SV, nút "Nhập điểm" mỗi hàng + "Nhập điểm cả lớp" |
-| Nhập điểm | `/lop/:id/diem` | Giáo viên | Chọn môn, bảng inline 3 ô nhập, xuất Excel/CSV |
-| Bảng điều khiển QTV | `/admin` | Người quản lý | 4 thẻ thống kê link sang CRUD |
-| Quản lý lớp | `/admin/classes` | Người quản lý | Bảng CRUD + Modal thêm/sửa |
+| Nhập điểm | `/lop/:id/diem` | Giáo viên | Chọn môn, bảng inline 3 ô nhập (TX/GK/CK), export Excel/CSV |
+| Bảng điều khiển QL | `/admin` | Người quản lý | 4 thẻ thống kê link sang CRUD, FAB menu |
+| Quản lý lớp | `/admin/classes` | Người quản lý | Bảng CRUD + Modal thêm/sửa + phân công GV |
+| Quản lý SV | `/admin/students` | Người quản lý | Bảng CRUD + Modal + Import Excel + chuyển lớp |
+| Quản lý môn | `/admin/subjects` | Người quản lý | Bảng CRUD + Modal |
+| Quản lý tài khoản | `/admin/accounts` | Người quản lý | Bảng CRUD + Modal + role + reset pwd + lock |
+| Tra cứu điểm | `/lookup` | GV + QL | Filter lớp/môn/SV, phân trang, export |
+| Báo cáo | `/report` | GV + QL | Stats + Chart.js (bar/doughnut) + export PDF |
 
 ---
 
@@ -239,17 +247,17 @@ erDiagram
 
 | Method | Endpoint | Mô tả | Quyền |
 |--------|----------|-------|-------|
-| GET | `/api/lop` | Danh sách lớp (lọc theo GV) | GV, QTV |
-| POST | `/api/lop` | Tạo lớp mới | QTV |
-| PUT | `/api/lop/:id` | Sửa lớp | QTV |
-| DELETE | `/api/lop/:id` | Xóa lớp | QTV |
-| GET | `/api/lop/:id/sinh-vien` | Sinh viên trong lớp | GV, QTV |
-| GET | `/api/mon-hoc` | Danh sách môn học | GV, QTV |
-| GET | `/api/diem?lop=&mon=&sv=` | Tra cứu điểm | GV, QTV |
+| GET | `/api/lop` | Danh sách lớp (lọc theo GV) | GV, QL |
+| POST | `/api/lop` | Tạo lớp mới | QL |
+| PUT | `/api/lop/:id` | Sửa lớp | QL |
+| DELETE | `/api/lop/:id` | Xóa lớp | QL |
+| GET | `/api/lop/:id/sinh-vien` | Sinh viên trong lớp | GV, QL |
+| GET | `/api/mon-hoc` | Danh sách môn học | GV, QL |
+| GET | `/api/diem?lop=&mon=&sv=` | Tra cứu điểm | GV, QL |
 | POST | `/api/diem` | Upsert điểm | GV |
 | GET | `/api/export/bang-diem/:lop/:mon` | Xuất Excel/CSV | GV |
 | GET | `/api/bao-cao/:lop` | Thống kê + dữ liệu biểu đồ | GV |
-| POST | `/api/auth/tai-khoan` | CRUD tài khoản | QTV |
+| POST | `/api/auth/tai-khoan` | CRUD tài khoản | QL |
 
 ---
 
@@ -257,10 +265,10 @@ erDiagram
 
 | Loại | Nội dung |
 |------|----------|
-| Công nghệ | Node 24+, React 19, Vite 8, Express, better-sqlite3 |
+| Công nghệ | Node 24+, React 19, Vite 8, Express, better-sqlite3, bcryptjs |
 | Triển khai | Frontend tĩnh (Netlify/Vercel) + API server (Railway/Render/VPS) |
 | Trình duyệt | Chrome 118+, Edge 118+, Firefox 119+ |
-| Dữ liệu mẫu | Seed 15 SV, 3 lớp, 3 môn, 2 tài khoản; có nút reset dữ liệu |
+| Dữ liệu mẫu | Seed 15 SV, 3 lớp, 3 môn, 2 tài khoản (bcrypt hash); có nút reset dữ liệu |
 | Phạm vi | Không mobile, không SSO, không realtime, không đa tenant |
 
 ---
@@ -269,14 +277,15 @@ erDiagram
 
 | Thuật ngữ | Định nghĩa |
 |-----------|------------|
-| Tổng kết | Điểm trung bình có trọng số: 0.3×Thường kỳ + 0.3×Giữa kỳ + 0.4×Cuối kỳ |
-| Thường kỳ (TK) | Điểm quá trình hàng ngày / bài tập |
-| Giữa kỳ (GK) | Điểm kiểm tra giữa học kỳ |
-| Cuối kỳ (CK) | Điểm thi kết thúc học kỳ |
+| Tổng kết | Điểm trung bình có trọng số: 0.3×Thường_xuyên + 0.3×Giữa_kỳ + 0.4×Cuối_kỳ |
+| Thường_xuyên (TX) | Điểm quá trình hàng ngày / bài tập / 15p / 1 tiết |
+| Giữa_kỳ (GK) | Điểm kiểm tra giữa học kỳ |
+| Cuối_kỳ (CK) | Điểm thi kết thúc học kỳ |
 | Phân công | Gán `giao_vien_id` vào bảng `LOP` |
 | Upsert | INSERT nếu chưa tồn tại, UPDATE nếu đã có (theo UNIQUE key) |
 | Người quản lý | Người quản lý hệ thống, có toàn quyền truy cập và quản trị |
 | Giáo viên | Người nhập, tra cứu, xuất điểm (thay vì "teacher") |
+| Bcrypt | Thuật toán hash mật khẩu cost 10 |
 
 ---
 
@@ -285,17 +294,17 @@ erDiagram
 | US | Tiêu chí AC | Unit Test | E2E Test | File code chính |
 |----|-------------|-----------|----------|-----------------|
 | US-001 | AC1–AC3 | `lopService.test.js` | GV thấy 3 lớp | `ClassListPage.jsx`, `lopService.js` |
-| US-002 | AC1–AC3 | `lopService.test.js` (CRUD) | QTV tạo/sửa/xóa lớp | `AdminClassesPage.jsx`, `lopService.js` |
-| US-003 | AC1–AC4 | `sinhVienService.test.js` | QTV import Excel | `AdminStudentsPage.jsx`, `sinhVienService.js` |
-| US-004 | AC1–AC3 | `monHocService.test.js` | QTV CRUD môn | `AdminSubjectsPage.jsx`, `monHocService.js` |
+| US-002 | AC1–AC3 | `lopService.test.js` (CRUD) | QL tạo/sửa/xóa lớp | `AdminClassesPage.jsx`, `lopService.js` |
+| US-003 | AC1–AC4 | `sinhVienService.test.js` | QL import Excel | `AdminStudentsPage.jsx`, `sinhVienService.js` |
+| US-004 | AC1–AC3 | `monHocService.test.js` | QL CRUD môn | `AdminSubjectsPage.jsx`, `monHocService.js` |
 | US-005 | AC1–AC3 | `score.test.js` | GV nhập 7,5 → lưu | `ScoreEntryPage.jsx`, `diemService.js` |
 | US-006 | AC1–AC3 | `diemService.test.js` | GV sửa điểm | `ScoreEntryPage.jsx`, `diemService.js` |
 | US-007 | AC1–AC4 | `score.test.js` (12 cases) | GV nhập 15, abc, 7,5 | `utils/score.js`, `ScoreEntryPage.jsx` |
-| US-008 | AC1–AC3 | `diemService.test.js` (filter) | QTV/GV lọc dữ liệu | `ScoreLookupPage.jsx`, `diemService.js` |
+| US-008 | AC1–AC3 | `diemService.test.js` (filter) | QL/GV lọc dữ liệu | `ScoreLookupPage.jsx`, `diemService.js` |
 | US-009 | AC1–AC3 | `export.test.js` | Xuất Excel/CSV | `ScoreEntryPage.jsx` (handleExport) |
 | US-010 | AC1–AC3 | `baoCaoService.test.js` | Xem báo cáo, chart | `ReportPage.jsx`, `baoCaoService.js` |
-| US-011 | AC1–AC4 | `authService.test.js` | QTV tạo GV, reset pwd | `AdminAccountsPage.jsx`, `authService.js` |
+| US-011 | AC1–AC4 | `authService.test.js` | QL tạo GV, reset pwd | `AdminAccountsPage.jsx`, `authService.js` |
 
 ---
 
-> **Lưu ý:** Tài liệu này là **baseline** cho Sprint 1–3. Mọi thay đổi phạm vi phải cập nhật WHITEBOOK + đồng bộ `docs/*` + tạo GitHub Issue.
+> **Lưu ý:** Tài liệu này là **baseline v2.1** cho Sprint 1–3. Mọi thay đổi phạm vi phải cập nhật WHITEBOOK + đồng bộ `docs/*` + tạo GitHub Issue.
