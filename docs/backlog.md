@@ -7,7 +7,7 @@ Sử dụng định dạng tiêu chuẩn: "As a [user], I want [goal] so that [r
 **Bảng 2.1. Danh sách các user story trong Product backlog**
 
 | TT | Actor | Theme | EID | Epic | UID | User story |
-|----|-------|------|-----|------------|
+|----|-------|------|-----|-------|-------|--------|
 | 1 | Người quản lý | Quản lý dữ liệu học tập | EP1 | Quản lý lớp học | US1.1 | Là một người quản lý, tôi muốn tạo lớp học để cập nhật danh sách lớp trong hệ thống. |
 | 2 | Người quản lý | Quản lý dữ liệu học tập | EP1 | Quản lý lớp học | US1.2 | Là một người quản lý, tôi muốn sửa lớp học để cập nhật thông tin lớp khi có thay đổi. |
 | 3 | Người quản lý | Quản lý dữ liệu học tập | EP1 | Quản lý lớp học | US1.3 | Là một người quản lý, tôi muốn xóa lớp học để loại bỏ dữ liệu lớp không còn sử dụng. |
